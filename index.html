@@ -99,6 +99,10 @@
     footer{background:linear-gradient(160deg,#061008,#0d1a10);border-top:2px solid var(--gold);padding:34px 0;text-align:center}
     .footer-logo{font-family:'Noto Serif KR',serif;color:var(--gold);font-size:1.14rem;font-weight:700}
     .footer-info{margin-top:8px;color:#777;line-height:1.8;font-size:.78rem}
+    .gal-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}
+    .gal-item{position:relative;aspect-ratio:1;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#f0ead8}
+    .gal-item img{width:100%;height:100%;object-fit:cover;display:block}
+    .gal-cap{position:absolute;left:0;right:0;bottom:0;background:rgba(0,0,0,.56);color:#fff;font-size:.72rem;padding:6px 8px}
 
     /* modals */
     .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:100;align-items:center;justify-content:center;padding:18px}
@@ -128,11 +132,13 @@
     .adm-panel.show{display:block}
     .adm-card{background:#0a1a0e;border:1px solid #1f3a27;border-radius:12px;padding:18px;margin-bottom:16px}
     .adm-card h3{margin:0 0 12px;color:var(--gold2);font-size:.96rem}
-    .badge{display:inline-block;padding:4px 8px;border-radius:999px;font-size:.72rem;font-weight:800}
+    .badge2{display:inline-block;padding:4px 8px;border-radius:999px;font-size:.72rem;font-weight:800}
     .pending{background:#78350f;color:#fcd34d}
     .approved{background:#065f46;color:#6ee7b7}
     .rejected{background:#7f1d1d;color:#fca5a5}
     .small{font-size:.8rem;color:#a3a3a3}
+    .adm-field-row{display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:8px}
+    .adm-input{width:100%;padding:10px;border-radius:8px;border:1px solid #374151;background:#111827;color:#fff}
     @media(max-width:900px){
       .officials{grid-template-columns:repeat(3,1fr)}
       .adm-body{grid-template-columns:1fr}
@@ -145,6 +151,7 @@
       .hero-stats{flex-direction:column}
       .st{border-right:none;border-bottom:1px solid rgba(201,168,76,.16)}
       .st:last-child{border-bottom:none}
+      .adm-field-row{grid-template-columns:1fr}
     }
   </style>
 </head>
@@ -181,6 +188,7 @@
       <li><a href="#genealogy">족보 <span class="mtag">회원</span></a></li>
       <li><a href="#contact">연락처 <span class="mtag">회원</span></a></li>
       <li><a href="#rules">회칙 <span class="mtag">회원</span></a></li>
+      <li><a href="#gallery">사진첩 <span class="mtag">회원</span></a></li>
       <li><a href="#board">게시판</a></li>
     </ul>
   </nav>
@@ -229,7 +237,7 @@
       <div class="officials">
         <div class="official"><div class="r">고 문</div><div class="n">우 종</div></div>
         <div class="official"><div class="r">회 장</div><div class="n">종 윤</div></div>
-        <div class="official"><div class="r">부회장</div><div class="n">종 국</div></div>
+        <div class="official"><div class="r">부회장</div><div class="n">종 国</div></div>
         <div class="official"><div class="r">부회장</div><div class="n">삼 종</div></div>
         <div class="official"><div class="r">총무/간사</div><div class="n">혁 성</div></div>
       </div>
@@ -260,9 +268,7 @@
 
   <section id="tomb" style="background:linear-gradient(160deg,#d5e5cc,#ede5d0)">
     <div class="wrap">
-      <div class="member-lock" id="tombLock">
-        <div class="lock"><div class="ico">🪦</div><h3>회원 전용 콘텐츠</h3><p>묘소 조성 현황은 승인된 종친 회원만 열람하실 수 있습니다.</p><div class="lock-btns"><button class="btn btn-green" onclick="openLogin()">로그인</button><button class="btn btn-gray" onclick="openJoin()">회원가입</button></div></div>
-      </div>
+      <div class="member-lock" id="tombLock"><div class="lock"><div class="ico">🪦</div><h3>회원 전용 콘텐츠</h3><p>묘소 조성 현황은 승인된 종친 회원만 열람하실 수 있습니다.</p><div class="lock-btns"><button class="btn btn-green" onclick="openLogin()">로그인</button><button class="btn btn-gray" onclick="openJoin()">회원가입</button></div></div></div>
       <div class="member-only" id="tombContent">
         <div class="sec-hd"><span class="sec-tag au">墓所 · 묘소 조성</span><h2 class="sec-t">가족묘지 조성 현황</h2><div class="sec-line"></div></div>
         <div class="info-grid">
@@ -276,9 +282,7 @@
 
   <section id="finance">
     <div class="wrap">
-      <div class="member-lock" id="financeLock">
-        <div class="lock"><div class="ico">💰</div><h3>회원 전용 콘텐츠</h3><p>재정 현황은 승인된 종친 회원만 열람하실 수 있습니다.</p><div class="lock-btns"><button class="btn btn-green" onclick="openLogin()">로그인</button><button class="btn btn-gray" onclick="openJoin()">회원가입</button></div></div>
-      </div>
+      <div class="member-lock" id="financeLock"><div class="lock"><div class="ico">💰</div><h3>회원 전용 콘텐츠</h3><p>재정 현황은 승인된 종친 회원만 열람하실 수 있습니다.</p><div class="lock-btns"><button class="btn btn-green" onclick="openLogin()">로그인</button><button class="btn btn-gray" onclick="openJoin()">회원가입</button></div></div></div>
       <div class="member-only" id="financeContent">
         <div class="sec-hd"><span class="sec-tag gold">Finance · 재정 현황</span><h2 class="sec-t">문중 재정 현황</h2><div class="sec-line"></div></div>
         <div class="fin-grid">
@@ -293,9 +297,7 @@
 
   <section id="genealogy" style="background:linear-gradient(160deg,#d5e5cc,#ede5d0,#d5e5cc)">
     <div class="wrap">
-      <div class="member-lock" id="genealogyLock">
-        <div class="lock"><div class="ico">📖</div><h3>회원 전용 콘텐츠</h3><p>족보는 승인된 종친 회원만 열람하실 수 있습니다.</p><div class="lock-btns"><button class="btn btn-green" onclick="openLogin()">로그인</button><button class="btn btn-gray" onclick="openJoin()">회원가입</button></div></div>
-      </div>
+      <div class="member-lock" id="genealogyLock"><div class="lock"><div class="ico">📖</div><h3>회원 전용 콘텐츠</h3><p>족보는 승인된 종친 회원만 열람하실 수 있습니다.</p><div class="lock-btns"><button class="btn btn-green" onclick="openLogin()">로그인</button><button class="btn btn-gray" onclick="openJoin()">회원가입</button></div></div></div>
       <div class="member-only" id="genealogyContent">
         <div class="sec-hd"><span class="sec-tag">族譜 · 족보</span><h2 class="sec-t">해주오씨 시중공파 계보</h2><div class="sec-line"></div></div>
         <div class="card"><p>18세손 정회원 21명 / 19세손 준회원 9명 자료 기준. 누락 회원은 총무 혁성에게 연락 바랍니다.</p></div>
@@ -305,24 +307,30 @@
 
   <section id="contact">
     <div class="wrap">
-      <div class="member-lock" id="contactLock">
-        <div class="lock"><div class="ico">📞</div><h3>회원 전용 콘텐츠</h3><p>연락처는 승인된 종친 회원만 열람하실 수 있습니다.</p><div class="lock-btns"><button class="btn btn-green" onclick="openLogin()">로그인</button><button class="btn btn-gray" onclick="openJoin()">회원가입</button></div></div>
-      </div>
+      <div class="member-lock" id="contactLock"><div class="lock"><div class="ico">📞</div><h3>회원 전용 콘텐츠</h3><p>연락처는 승인된 종친 회원만 열람하실 수 있습니다.</p><div class="lock-btns"><button class="btn btn-green" onclick="openLogin()">로그인</button><button class="btn btn-gray" onclick="openJoin()">회원가입</button></div></div></div>
       <div class="member-only" id="contactContent">
         <div class="sec-hd"><span class="sec-tag">Contact · 연락처</span><h2 class="sec-t">문중 연락처</h2><div class="sec-line"></div></div>
-        <div class="tbl-wrap"><table><thead><tr><th>성명</th><th>휴대폰</th><th>비고</th></tr></thead><tbody><tr><td>혁성</td><td>010-9098-1481</td><td>총무/간사</td></tr><tr><td>종윤</td><td>문중 보관</td><td>회장</td></tr></tbody></table></div>
+        <div class="tbl-wrap"><table><thead><tr><th>성명</th><th>전화(집)</th><th>휴대폰</th><th>이메일</th><th>비고</th></tr></thead><tbody id="contactTableBody"></tbody></table></div>
       </div>
     </div>
   </section>
 
   <section id="rules" style="background:#fff">
     <div class="wrap">
-      <div class="member-lock" id="rulesLock">
-        <div class="lock"><div class="ico">📜</div><h3>회원 전용 콘텐츠</h3><p>회칙은 승인된 종친 회원만 열람하실 수 있습니다.</p><div class="lock-btns"><button class="btn btn-green" onclick="openLogin()">로그인</button><button class="btn btn-gray" onclick="openJoin()">회원가입</button></div></div>
-      </div>
+      <div class="member-lock" id="rulesLock"><div class="lock"><div class="ico">📜</div><h3>회원 전용 콘텐츠</h3><p>회칙은 승인된 종친 회원만 열람하실 수 있습니다.</p><div class="lock-btns"><button class="btn btn-green" onclick="openLogin()">로그인</button><button class="btn btn-gray" onclick="openJoin()">회원가입</button></div></div></div>
       <div class="member-only" id="rulesContent">
         <div class="sec-hd"><span class="sec-tag">Rules · 회칙</span><h2 class="sec-t">합동제단 회칙</h2><div class="sec-line"></div></div>
         <div class="card"><h3>제1조 목적</h3><p>본 회는 해주오씨 시중공파 18세손 재급 이하 후손의 화합과 시제 운영을 목적으로 한다.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="gallery" style="background:linear-gradient(160deg,#ede5d0,#f7f3ea)">
+    <div class="wrap">
+      <div class="member-lock" id="galleryLock"><div class="lock"><div class="ico">📷</div><h3>회원 전용 콘텐츠</h3><p>사진첩은 승인된 종친 회원만 열람하실 수 있습니다.</p><div class="lock-btns"><button class="btn btn-green" onclick="openLogin()">로그인</button><button class="btn btn-gray" onclick="openJoin()">회원가입</button></div></div></div>
+      <div class="member-only" id="galleryContent">
+        <div class="sec-hd"><span class="sec-tag gold">Gallery · 사진첩</span><h2 class="sec-t">문중 사진첩</h2><div class="sec-line"></div></div>
+        <div class="gal-grid" id="galleryGrid"></div>
       </div>
     </div>
   </section>
@@ -386,13 +394,13 @@
   <div class="admin-page" id="adminPage">
     <div class="adm-top">
       <div style="font-family:'Noto Serif KR',serif;font-weight:700;color:var(--gold)">🌿 해주오씨 시중공파 — 관리자</div>
-      <div style="display:flex;gap:8px">
-        <button class="btn btn-gray btn-sm" id="btnAdminClose">홈으로</button>
-      </div>
+      <div style="display:flex;gap:8px"><button class="btn btn-gray btn-sm" id="btnAdminClose">홈으로</button></div>
     </div>
     <div class="adm-body">
       <div class="adm-side">
         <div class="adm-item on" data-panel="membersPanel">회원 승인 관리</div>
+        <div class="adm-item" data-panel="contactsPanel">연락처 관리</div>
+        <div class="adm-item" data-panel="galleryPanel">사진첩 관리</div>
         <div class="adm-item" data-panel="guidePanel">운영 안내</div>
       </div>
       <div class="adm-main">
@@ -407,6 +415,55 @@
             </div>
           </div>
         </div>
+
+        <div id="contactsPanel" class="adm-panel">
+          <div class="adm-card">
+            <h3>연락처 추가</h3>
+            <div class="adm-field-row">
+              <input class="adm-input" id="ctName" placeholder="성명">
+              <input class="adm-input" id="ctHome" placeholder="전화(집)">
+              <input class="adm-input" id="ctMobile" placeholder="휴대폰">
+              <button class="btn btn-green" id="addContactBtn">추가</button>
+            </div>
+            <div class="adm-field-row" style="margin-top:8px">
+              <input class="adm-input" id="ctEmail" placeholder="이메일">
+              <input class="adm-input" id="ctNote" placeholder="비고">
+              <div></div><div></div>
+            </div>
+          </div>
+          <div class="adm-card">
+            <h3>연락처 목록</h3>
+            <div class="tbl-wrap">
+              <table>
+                <thead><tr><th>성명</th><th>전화(집)</th><th>휴대폰</th><th>이메일</th><th>비고</th><th>삭제</th></tr></thead>
+                <tbody id="adminContactBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div id="galleryPanel" class="adm-panel">
+          <div class="adm-card">
+            <h3>사진첩 추가</h3>
+            <div class="adm-field-row">
+              <input class="adm-input" id="galTitle" placeholder="사진 설명">
+              <input class="adm-input" id="galUrl" placeholder="이미지 주소(URL)">
+              <button class="btn btn-green" id="addGalleryBtn">추가</button>
+              <div></div>
+            </div>
+            <p class="small" style="margin-top:8px">이미지 주소는 웹에 올라간 사진 주소를 넣으면 됩니다.</p>
+          </div>
+          <div class="adm-card">
+            <h3>등록된 사진</h3>
+            <div class="tbl-wrap">
+              <table>
+                <thead><tr><th>설명</th><th>이미지 주소</th><th>삭제</th></tr></thead>
+                <tbody id="adminGalleryBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
         <div id="guidePanel" class="adm-panel">
           <div class="adm-card">
             <h3>운영 안내</h3>
@@ -441,8 +498,8 @@
     const SESSION_KEY = "haejuo_current_member";
     const ADMIN_KEY = "haejuo_admin_logged_in";
 
-    const memberOnlyIds = ["tombContent","financeContent","genealogyContent","contactContent","rulesContent"];
-    const lockIds = ["tombLock","financeLock","genealogyLock","contactLock","rulesLock"];
+    const memberOnlyIds = ["tombContent","financeContent","genealogyContent","contactContent","rulesContent","galleryContent"];
+    const lockIds = ["tombLock","financeLock","genealogyLock","contactLock","rulesLock","galleryLock"];
 
     const byId = (id) => document.getElementById(id);
 
@@ -454,20 +511,13 @@
     window.closeModal = closeModal;
     window.switchModal = switchModal;
 
-    function formatPhone(raw){
-      return (raw || "").replace(/[^0-9]/g,"");
-    }
-
+    function formatPhone(raw){ return (raw || "").replace(/[^0-9]/g,""); }
     function setMsg(id, type, text){
       const el = byId(id);
       el.className = `msg show ${type === "ok" ? "okmsg" : "err"}`;
       el.textContent = text;
     }
-    function clearMsg(id){
-      const el = byId(id);
-      el.className = "msg";
-      el.textContent = "";
-    }
+    function clearMsg(id){ const el = byId(id); el.className = "msg"; el.textContent = ""; }
 
     function showApprovedMemberUI(member){
       byId("guestBtns").style.display = "none";
@@ -489,41 +539,24 @@
       catch { return null; }
     }
 
-    function setSession(member){
-      localStorage.setItem(SESSION_KEY, JSON.stringify(member));
-    }
-
-    function clearSession(){
-      localStorage.removeItem(SESSION_KEY);
-    }
+    function setSession(member){ localStorage.setItem(SESSION_KEY, JSON.stringify(member)); }
+    function clearSession(){ localStorage.removeItem(SESSION_KEY); }
 
     async function refreshSessionStatus(){
       const current = getSession();
       if(!current || !current.phone){ showGuestUI(); return; }
-
       const q = query(collection(db, "members"), where("phone", "==", current.phone));
       const snap = await getDocs(q);
       if(snap.empty){ clearSession(); showGuestUI(); return; }
-
       const row = snap.docs[0];
       const data = { id: row.id, ...row.data() };
-
-      if(data.status === "approved"){
-        setSession(data);
-        showApprovedMemberUI(data);
-      } else {
-        clearSession();
-        showGuestUI();
-      }
+      if(data.status === "approved"){ setSession(data); showApprovedMemberUI(data); }
+      else { clearSession(); showGuestUI(); }
     }
 
     byId("btnJoin").addEventListener("click", ()=> openModal("joinModal"));
     byId("btnLogin").addEventListener("click", ()=> openModal("loginModal"));
-    byId("btnLogout").addEventListener("click", ()=>{
-      clearSession();
-      showGuestUI();
-      alert("로그아웃되었습니다.");
-    });
+    byId("btnLogout").addEventListener("click", ()=>{ clearSession(); showGuestUI(); alert("로그아웃되었습니다."); });
 
     byId("joinSubmit").addEventListener("click", async ()=>{
       clearMsg("joinMsg");
@@ -532,95 +565,57 @@
       const type = byId("joinType").value;
       const relation = byId("joinRelation").value.trim();
 
-      if(!name || !phone){
-        setMsg("joinMsg", "err", "성함과 휴대폰 번호를 입력하세요.");
-        return;
-      }
-      if(phone.length < 10){
-        setMsg("joinMsg", "err", "휴대폰 번호를 정확히 입력하세요.");
-        return;
-      }
+      if(!name || !phone){ setMsg("joinMsg", "err", "성함과 휴대폰 번호를 입력하세요."); return; }
+      if(phone.length < 10){ setMsg("joinMsg", "err", "휴대폰 번호를 정확히 입력하세요."); return; }
 
       const existsQ = query(collection(db, "members"), where("phone", "==", phone));
       const existsSnap = await getDocs(existsQ);
 
       if(!existsSnap.empty){
         const existing = existsSnap.docs[0].data();
-        if(existing.status === "approved"){
-          setMsg("joinMsg", "err", "이미 승인된 회원입니다. 로그인 해주세요.");
-        } else {
-          setMsg("joinMsg", "err", "이미 가입 신청된 번호입니다. 관리자 승인 대기 중입니다.");
-        }
+        if(existing.status === "approved"){ setMsg("joinMsg", "err", "이미 승인된 회원입니다. 로그인 해주세요."); }
+        else { setMsg("joinMsg", "err", "이미 가입 신청된 번호입니다. 관리자 승인 대기 중입니다."); }
         return;
       }
 
-      await addDoc(collection(db, "members"), {
-        name, phone, type, relation,
-        status: "pending",
-        createdAt: serverTimestamp()
-      });
-
+      await addDoc(collection(db, "members"), { name, phone, type, relation, status: "pending", createdAt: serverTimestamp() });
       setMsg("joinMsg", "ok", "가입 신청이 접수되었습니다. 관리자 승인 후 로그인 가능합니다.");
-      byId("joinName").value = "";
-      byId("joinPhone").value = "";
-      byId("joinRelation").value = "";
+      byId("joinName").value = ""; byId("joinPhone").value = ""; byId("joinRelation").value = "";
     });
 
     byId("loginSubmit").addEventListener("click", async ()=>{
       clearMsg("loginMsg");
       const phone = formatPhone(byId("loginPhone").value);
-
-      if(!phone){
-        setMsg("loginMsg", "err", "휴대폰 번호를 입력하세요.");
-        return;
-      }
+      if(!phone){ setMsg("loginMsg", "err", "휴대폰 번호를 입력하세요."); return; }
 
       const q = query(collection(db, "members"), where("phone", "==", phone));
       const snap = await getDocs(q);
 
-      if(snap.empty){
-        setMsg("loginMsg", "err", "가입 신청 내역이 없습니다.");
-        return;
-      }
+      if(snap.empty){ setMsg("loginMsg", "err", "가입 신청 내역이 없습니다."); return; }
 
       const row = snap.docs[0];
       const data = { id: row.id, ...row.data() };
 
-      if(data.status !== "approved"){
-        setMsg("loginMsg", "err", "아직 관리자 승인이 되지 않았습니다.");
-        return;
-      }
+      if(data.status !== "approved"){ setMsg("loginMsg", "err", "아직 관리자 승인이 되지 않았습니다."); return; }
 
-      setSession(data);
-      showApprovedMemberUI(data);
-      closeModal("loginModal");
-      alert("로그인되었습니다.");
+      setSession(data); showApprovedMemberUI(data); closeModal("loginModal"); alert("로그인되었습니다.");
     });
 
     byId("btnAdmin").addEventListener("click", ()=>{
-      if(localStorage.getItem(ADMIN_KEY) === "1"){
-        byId("adminPage").classList.add("show");
-      } else {
-        openModal("adminLoginModal");
-      }
+      if(localStorage.getItem(ADMIN_KEY) === "1") byId("adminPage").classList.add("show");
+      else openModal("adminLoginModal");
     });
 
     byId("adminLoginSubmit").addEventListener("click", ()=>{
       clearMsg("adminLoginMsg");
       const pw = byId("adminPw").value;
-      if(pw !== ADMIN_PASSWORD){
-        setMsg("adminLoginMsg", "err", "관리자 비밀번호가 올바르지 않습니다.");
-        return;
-      }
+      if(pw !== ADMIN_PASSWORD){ setMsg("adminLoginMsg", "err", "관리자 비밀번호가 올바르지 않습니다."); return; }
       localStorage.setItem(ADMIN_KEY, "1");
       closeModal("adminLoginModal");
       byId("adminPage").classList.add("show");
       byId("adminPw").value = "";
     });
-
-    byId("btnAdminClose").addEventListener("click", ()=>{
-      byId("adminPage").classList.remove("show");
-    });
+    byId("btnAdminClose").addEventListener("click", ()=> byId("adminPage").classList.remove("show"));
 
     document.querySelectorAll(".adm-item").forEach(item=>{
       item.addEventListener("click", ()=>{
@@ -654,28 +649,108 @@
           <td>${m.type || ""}</td>
           <td>${m.relation || ""}</td>
           <td>${fmtDate(m.createdAt)}</td>
-          <td><span class="badge ${statusClass}">${statusText}</span></td>
-          <td>
-            <button class="btn btn-green btn-sm approveBtn">승인</button>
-            <button class="btn btn-gray btn-sm rejectBtn">반려</button>
-          </td>
+          <td><span class="badge2 ${statusClass}">${statusText}</span></td>
+          <td><button class="btn btn-green btn-sm approveBtn">승인</button> <button class="btn btn-gray btn-sm rejectBtn">반려</button></td>
           <td><button class="btn btn-red btn-sm delBtn">삭제</button></td>
         `;
-        tr.querySelector(".approveBtn").addEventListener("click", async ()=>{
-          await updateDoc(doc(db, "members", row.id), { status: "approved" });
-          alert("승인되었습니다.");
-        });
-        tr.querySelector(".rejectBtn").addEventListener("click", async ()=>{
-          await updateDoc(doc(db, "members", row.id), { status: "rejected" });
-          alert("반려 처리되었습니다.");
-        });
-        tr.querySelector(".delBtn").addEventListener("click", async ()=>{
-          if(!confirm("이 신청을 삭제할까요?")) return;
-          await deleteDoc(doc(db, "members", row.id));
-        });
+        tr.querySelector(".approveBtn").addEventListener("click", async ()=>{ await updateDoc(doc(db, "members", row.id), { status: "approved" }); alert("승인되었습니다."); });
+        tr.querySelector(".rejectBtn").addEventListener("click", async ()=>{ await updateDoc(doc(db, "members", row.id), { status: "rejected" }); alert("반려 처리되었습니다."); });
+        tr.querySelector(".delBtn").addEventListener("click", async ()=>{ if(!confirm("이 신청을 삭제할까요?")) return; await deleteDoc(doc(db, "members", row.id)); });
         tbody.appendChild(tr);
       });
     });
+
+    // contacts
+    const defaultContacts = [
+      {name:"혁성", home:"", mobile:"010-9098-1481", email:"", note:"총무/간사"},
+      {name:"종윤", home:"", mobile:"문중 보관", email:"", note:"회장"}
+    ];
+
+    async function seedContactsIfEmpty(){
+      const snap = await getDocs(collection(db, "contacts"));
+      if(!snap.empty) return;
+      for (const c of defaultContacts){
+        await addDoc(collection(db, "contacts"), c);
+      }
+    }
+
+    function renderContacts(snap){
+      const body = byId("contactTableBody");
+      const adminBody = byId("adminContactBody");
+      body.innerHTML = "";
+      adminBody.innerHTML = "";
+      snap.forEach((row)=>{
+        const c = row.data();
+        const tr1 = document.createElement("tr");
+        tr1.innerHTML = `<td>${c.name||""}</td><td>${c.home||""}</td><td>${c.mobile||""}</td><td>${c.email||""}</td><td>${c.note||""}</td>`;
+        body.appendChild(tr1);
+
+        const tr2 = document.createElement("tr");
+        tr2.innerHTML = `<td>${c.name||""}</td><td>${c.home||""}</td><td>${c.mobile||""}</td><td>${c.email||""}</td><td>${c.note||""}</td><td><button class="btn btn-red btn-sm delContactBtn">삭제</button></td>`;
+        tr2.querySelector(".delContactBtn").addEventListener("click", async ()=>{ if(!confirm("연락처를 삭제할까요?")) return; await deleteDoc(doc(db,"contacts",row.id)); });
+        adminBody.appendChild(tr2);
+      });
+    }
+
+    byId("addContactBtn").addEventListener("click", async ()=>{
+      const name = byId("ctName").value.trim();
+      const home = byId("ctHome").value.trim();
+      const mobile = byId("ctMobile").value.trim();
+      const email = byId("ctEmail").value.trim();
+      const note = byId("ctNote").value.trim();
+      if(!name){ alert("성명을 입력하세요."); return; }
+      await addDoc(collection(db,"contacts"), {name, home, mobile, email, note});
+      ["ctName","ctHome","ctMobile","ctEmail","ctNote"].forEach(id=>byId(id).value="");
+    });
+
+    // gallery
+    const defaultGallery = [
+      {title:"문중 행사 사진 1", url:"https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?q=80&w=1200&auto=format&fit=crop"},
+      {title:"문중 행사 사진 2", url:"https://images.unsplash.com/photo-1508739773434-c26b3d09e071?q=80&w=1200&auto=format&fit=crop"},
+      {title:"문중 행사 사진 3", url:"https://images.unsplash.com/photo-1518173946687-a4c8892bbd9f?q=80&w=1200&auto=format&fit=crop"}
+    ];
+
+    async function seedGalleryIfEmpty(){
+      const snap = await getDocs(collection(db, "gallery"));
+      if(!snap.empty) return;
+      for (const g of defaultGallery){
+        await addDoc(collection(db, "gallery"), g);
+      }
+    }
+
+    function renderGallery(snap){
+      const grid = byId("galleryGrid");
+      const adminBody = byId("adminGalleryBody");
+      grid.innerHTML = "";
+      adminBody.innerHTML = "";
+      snap.forEach((row)=>{
+        const g = row.data();
+        const item = document.createElement("div");
+        item.className = "gal-item";
+        item.innerHTML = `<img src="${g.url}" alt="${g.title||''}"><div class="gal-cap">${g.title||""}</div>`;
+        grid.appendChild(item);
+
+        const tr = document.createElement("tr");
+        tr.innerHTML = `<td>${g.title||""}</td><td style="max-width:280px;word-break:break-all">${g.url||""}</td><td><button class="btn btn-red btn-sm delGalleryBtn">삭제</button></td>`;
+        tr.querySelector(".delGalleryBtn").addEventListener("click", async ()=>{ if(!confirm("사진을 삭제할까요?")) return; await deleteDoc(doc(db,"gallery",row.id)); });
+        adminBody.appendChild(tr);
+      });
+    }
+
+    byId("addGalleryBtn").addEventListener("click", async ()=>{
+      const title = byId("galTitle").value.trim();
+      const url = byId("galUrl").value.trim();
+      if(!url){ alert("이미지 주소를 입력하세요."); return; }
+      await addDoc(collection(db,"gallery"), {title, url});
+      byId("galTitle").value = "";
+      byId("galUrl").value = "";
+    });
+
+    await seedContactsIfEmpty();
+    await seedGalleryIfEmpty();
+
+    onSnapshot(query(collection(db, "contacts")), renderContacts);
+    onSnapshot(query(collection(db, "gallery")), renderGallery);
 
     refreshSessionStatus();
   </script>
