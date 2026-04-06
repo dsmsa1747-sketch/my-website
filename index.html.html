@@ -1,0 +1,1199 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>해주오씨 시중공파 — 18세손 재급이하 합동제단</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;600;700;900&family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --spring:#6b9e4a;--spring-light:#a8cc82;--spring-pale:#eef5e6;
+  --summer:#1e6640;--summer-light:#3d9966;--summer-pale:#e6f2eb;
+  --autumn:#b86a18;--autumn-light:#e09444;--autumn-pale:#fdf0e0;
+  --winter:#2e4a6e;--winter-light:#6490ba;--winter-pale:#e8eef5;
+  --gold:#c9a84c;--gold-light:#e8c97a;--gold-dark:#8b6914;
+  --ink:#1c1a14;--ink-mid:#3d3420;--cream:#f7f3ea;--cream-dark:#ede5d0;
+  --stone:#7a6e58;--red:#8b1a1a;--white:#ffffff;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--cream);color:var(--ink);line-height:1.65;}
+
+/* OVERLAY */
+.overlay{display:none;position:fixed;inset:0;background:rgba(10,14,10,.8);z-index:3000;align-items:center;justify-content:center;backdrop-filter:blur(6px);}
+.overlay.active{display:flex;}
+.modal{background:var(--cream);border:1.5px solid var(--gold);border-top:4px solid var(--summer);border-radius:8px;padding:32px 28px;width:92%;max-width:440px;max-height:90vh;overflow-y:auto;position:relative;box-shadow:0 24px 72px rgba(0,0,0,.5);}
+.modal-close{position:absolute;top:12px;right:16px;background:none;border:none;font-size:1.4rem;color:var(--stone);cursor:pointer;}
+.modal-title{font-family:'Noto Serif KR',serif;font-size:1.4rem;font-weight:700;text-align:center;color:var(--ink);margin-bottom:4px;}
+.modal-sub{text-align:center;font-size:.82rem;color:var(--stone);margin-bottom:22px;}
+.form-group{margin-bottom:12px;}
+.form-group label{display:block;font-size:.76rem;font-weight:600;color:var(--stone);margin-bottom:4px;}
+.form-group input,.form-group select,.form-group textarea{width:100%;padding:10px 13px;border:1.5px solid #d0c4a8;border-radius:4px;background:var(--white);font-family:'Noto Sans KR',sans-serif;font-size:.9rem;color:var(--ink);outline:none;transition:border-color .2s;}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--summer);}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+@media(max-width:480px){.form-row{grid-template-columns:1fr;}}
+.btn-kakao{width:100%;padding:12px;background:#FEE500;color:#3C1E1E;border:none;border-radius:6px;font-size:.93rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:12px;}
+.kakao-icon{width:20px;height:20px;background:#3C1E1E;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;color:#FEE500;font-weight:900;flex-shrink:0;}
+.or-div{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.or-div::before,.or-div::after{content:'';flex:1;height:1px;background:#d0c4a8;}
+.or-div span{font-size:.72rem;color:var(--stone);white-space:nowrap;}
+.btn-primary{width:100%;padding:12px;background:var(--summer);color:var(--white);border:none;border-radius:6px;font-family:'Noto Serif KR',serif;font-size:.97rem;font-weight:700;cursor:pointer;margin-top:4px;}
+.modal-switch{text-align:center;margin-top:12px;font-size:.82rem;color:var(--stone);}
+.modal-switch a{color:var(--summer);font-weight:700;cursor:pointer;}
+.alert{padding:9px 13px;border-radius:4px;font-size:.8rem;margin-bottom:10px;display:none;line-height:1.5;}
+.alert.show{display:block;}
+.alert-error{background:#fef2f2;border:1px solid #fca5a5;color:#991b1b;}
+.alert-success{background:#f0fdf4;border:1px solid #86efac;color:#166534;}
+
+/* HEADER */
+header{background:rgba(14,26,16,.97);position:sticky;top:0;z-index:1500;border-bottom:2px solid var(--gold);}
+.header-inner{max-width:1140px;margin:0 auto;padding:0 16px;display:flex;align-items:center;justify-content:space-between;height:60px;}
+.logo{display:flex;align-items:center;gap:10px;cursor:pointer;}
+.logo-char{font-family:'Noto Serif KR',serif;font-size:1.8rem;font-weight:900;color:var(--gold);line-height:1;}
+.logo-text .main{font-family:'Noto Serif KR',serif;font-size:.9rem;font-weight:700;color:var(--white);display:block;}
+.logo-text .sub{font-size:.65rem;color:var(--gold-light);display:block;}
+.header-actions{display:flex;align-items:center;gap:6px;}
+.btn-h-login{padding:7px 14px;border:1.5px solid var(--gold);background:transparent;color:var(--gold);border-radius:4px;font-size:.8rem;font-weight:600;cursor:pointer;}
+.btn-h-join{padding:7px 14px;border:none;background:var(--gold);color:var(--ink);border-radius:4px;font-size:.8rem;font-weight:700;cursor:pointer;}
+.user-info{display:none;align-items:center;gap:8px;}
+.user-info.active{display:flex;}
+.user-name{font-size:.82rem;color:var(--gold-light);font-weight:600;}
+.btn-logout{padding:5px 10px;border:1px solid #555;background:transparent;color:#aaa;border-radius:4px;font-size:.74rem;cursor:pointer;}
+
+/* SECTION NAV */
+.snav{background:#fff;border-bottom:1.5px solid #d8cdb0;position:sticky;top:60px;z-index:1000;box-shadow:0 2px 8px rgba(0,0,0,.06);}
+.snav-inner{max-width:1140px;margin:0 auto;display:flex;overflow-x:auto;scrollbar-width:none;padding:0 8px;}
+.snav-inner::-webkit-scrollbar{display:none;}
+.snav a{padding:13px 14px;font-size:.8rem;font-weight:500;color:var(--stone);white-space:nowrap;border-bottom:2.5px solid transparent;transition:all .2s;cursor:pointer;display:flex;align-items:center;gap:3px;}
+.snav a:hover{color:var(--ink);}
+.snav a.active{color:var(--summer);border-bottom-color:var(--summer);font-weight:700;}
+.mtag{font-size:.55rem;background:var(--gold);color:var(--ink);padding:1px 4px;border-radius:6px;font-weight:700;}
+
+/* HERO */
+#hero{background:linear-gradient(160deg,#0c1c0e 0%,#163520 40%,#1f4e28 70%,#0c1c0e 100%);min-height:88vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
+.sl{position:absolute;inset:0;opacity:0;transition:opacity 3s ease;pointer-events:none;background-size:cover;background-position:center;animation:none;}
+.sl.on{opacity:1;animation:kbEffect 14s ease-in-out forwards;}
+@keyframes kbEffect{0%{transform:scale(1) translate(0,0);}100%{transform:scale(1.08) translate(-1%,-1%);}}
+/* 봄 - 연녹색 차밭 풍경 */
+.sl.spring{background-image:linear-gradient(180deg,rgba(0,0,0,.25) 0%,rgba(0,0,0,.15) 50%,rgba(247,243,235,.85) 100%),url('https://images.unsplash.com/photo-1518173946687-a4c8892bbd9f?w=1600&q=80&fit=crop');}
+/* 여름 - 짙은 녹음 */
+.sl.summer{background-image:linear-gradient(180deg,rgba(0,0,0,.3) 0%,rgba(0,0,0,.2) 50%,rgba(247,243,235,.85) 100%),url('https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=1600&q=80&fit=crop');}
+/* 가을 - 황금빛 단풍 */
+.sl.autumn{background-image:linear-gradient(180deg,rgba(0,0,0,.25) 0%,rgba(0,0,0,.15) 50%,rgba(247,243,235,.85) 100%),url('https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=1600&q=80&fit=crop');}
+/* 겨울 - 설경 안개 */
+.sl.winter{background-image:linear-gradient(180deg,rgba(0,0,0,.35) 0%,rgba(0,0,0,.25) 50%,rgba(247,243,235,.85) 100%),url('https://images.unsplash.com/photo-1551582045-6ec9c11d8697?w=1600&q=80&fit=crop');}
+.tea-pat{position:absolute;inset:0;background-image:repeating-linear-gradient(-45deg,transparent,transparent 26px,rgba(201,168,76,.03) 26px,rgba(201,168,76,.03) 28px);pointer-events:none;}
+.hero-bg-c{position:absolute;font-family:'Noto Serif KR',serif;font-size:38vw;font-weight:900;color:rgba(201,168,76,.04);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;user-select:none;line-height:1;}
+.hero-content{position:relative;text-align:center;padding:50px 20px 40px;width:100%;}
+.hero-badge{display:inline-flex;align-items:center;gap:7px;border:1px solid rgba(201,168,76,.45);padding:5px 18px;border-radius:100px;margin-bottom:24px;font-size:.68rem;letter-spacing:.28em;color:var(--gold-light);background:rgba(0,0,0,.22);}
+.s-dot{width:6px;height:6px;border-radius:50%;background:var(--spring);display:inline-block;animation:sdot 16s infinite;}
+@keyframes sdot{0%,24%{background:var(--spring);}25%,49%{background:var(--summer);}50%,74%{background:var(--autumn);}75%,100%{background:var(--winter);}}
+.hero-hanja{font-family:'Noto Serif KR',serif;font-size:clamp(3rem,9vw,6rem);font-weight:900;color:var(--gold);line-height:1;margin-bottom:8px;text-shadow:0 4px 36px rgba(201,168,76,.38);}
+.hero-title{font-family:'Noto Serif KR',serif;font-size:clamp(1.6rem,5vw,2.8rem);font-weight:700;color:var(--white);margin-bottom:8px;letter-spacing:.12em;text-shadow:0 2px 14px rgba(0,0,0,.45);}
+.hero-sub{font-family:'Noto Serif KR',serif;font-size:clamp(.9rem,2.5vw,1.1rem);color:var(--gold-light);margin-bottom:6px;letter-spacing:.22em;}
+.hero-desc{font-size:.82rem;color:rgba(255,255,255,.48);margin-bottom:36px;letter-spacing:.1em;}
+.hero-div{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:36px;}
+.hero-div span{color:var(--gold);font-size:.65rem;}
+.hero-div::before,.hero-div::after{content:'';width:60px;height:1px;background:linear-gradient(90deg,transparent,var(--gold));}
+.hero-div::after{background:linear-gradient(90deg,var(--gold),transparent);}
+
+/* 통계 — 한 줄 */
+.hero-stats{display:flex;justify-content:center;align-items:stretch;background:rgba(0,0,0,.32);border:1px solid rgba(201,168,76,.22);border-radius:10px;max-width:480px;margin:0 auto;overflow:hidden;}
+.stat-item{flex:1;text-align:center;padding:18px 6px;border-right:1px solid rgba(201,168,76,.18);}
+.stat-item:last-child{border-right:none;}
+.stat-num{font-family:'Noto Serif KR',serif;font-size:clamp(1.1rem,3vw,1.7rem);font-weight:700;color:var(--gold);display:block;white-space:nowrap;line-height:1.1;}
+.stat-label{font-size:.63rem;color:rgba(255,255,255,.45);margin-top:3px;display:block;}
+.season-label{margin-top:22px;font-size:.66rem;letter-spacing:.18em;color:rgba(255,255,255,.32);}
+
+/* SECTIONS */
+section{padding:72px 20px;}
+.container{max-width:1140px;margin:0 auto;}
+.section-header{text-align:center;margin-bottom:52px;}
+.stag{font-size:.68rem;letter-spacing:.32em;color:var(--summer);display:block;margin-bottom:10px;font-weight:600;text-transform:uppercase;}
+.stag.at{color:var(--autumn);}
+.stag.wt{color:var(--winter-light);}
+.stag.gt{color:var(--gold);}
+.stitle{font-family:'Noto Serif KR',serif;font-size:clamp(1.5rem,4vw,2.1rem);font-weight:700;color:var(--ink);margin-bottom:14px;line-height:1.35;}
+.stitle-w{color:var(--white);}
+.sline{width:40px;height:2.5px;background:var(--gold);margin:0 auto;}
+
+/* 가문소개 */
+#intro{background:var(--cream);}
+.intro-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;}
+@media(max-width:560px){.intro-grid{grid-template-columns:1fr;}}
+.intro-card{background:var(--white);border:1px solid #ddd5bc;border-top:3px solid var(--spring);padding:26px 22px;border-radius:4px;}
+.intro-icon{font-family:'Noto Serif KR',serif;font-size:2rem;color:var(--summer);margin-bottom:12px;display:block;}
+.intro-card h3{font-family:'Noto Serif KR',serif;font-size:1.08rem;font-weight:700;color:var(--ink);margin-bottom:10px;}
+.intro-card p{font-size:.87rem;line-height:1.92;color:var(--ink-mid);}
+
+/* 연혁 */
+#history{background:var(--cream-dark);}
+.timeline{position:relative;max-width:720px;margin:0 auto;}
+.timeline::before{content:'';position:absolute;left:50%;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,var(--summer),rgba(30,102,64,.08));transform:translateX(-50%);}
+.tl-item{display:flex;justify-content:flex-end;padding-right:calc(50% + 30px);margin-bottom:44px;position:relative;}
+.tl-item:nth-child(even){justify-content:flex-start;padding-right:0;padding-left:calc(50% + 30px);}
+.tl-dot{position:absolute;left:50%;top:16px;width:13px;height:13px;background:var(--summer);border-radius:50%;transform:translateX(-50%);box-shadow:0 0 0 3px var(--cream-dark),0 0 0 5px var(--summer);}
+.tl-card{background:var(--white);border:1px solid #ddd5bc;border-left:3px solid var(--summer);padding:18px 20px;border-radius:4px;max-width:270px;}
+.tl-item:nth-child(even) .tl-card{border-left:none;border-right:3px solid var(--autumn);}
+.tl-era{font-size:.68rem;color:var(--summer);font-weight:700;letter-spacing:.1em;margin-bottom:5px;}
+.tl-card h3{font-family:'Noto Serif KR',serif;font-size:.94rem;font-weight:700;color:var(--ink);margin-bottom:6px;}
+.tl-card p{font-size:.82rem;line-height:1.75;color:var(--stone);}
+@media(max-width:600px){
+  .timeline::before{left:18px;}
+  .tl-item,.tl-item:nth-child(even){padding-left:46px;padding-right:0;justify-content:flex-start;}
+  .tl-dot{left:18px;}
+  .tl-card{max-width:100%;}
+}
+
+/* 임원 */
+#officials{background:linear-gradient(160deg,#0b1a0e 0%,#132a16 55%,#0b1a0e 100%);position:relative;overflow:hidden;}
+#officials::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(-30deg,transparent,transparent 42px,rgba(201,168,76,.02) 42px,rgba(201,168,76,.02) 44px);}
+.officials-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;position:relative;}
+@media(max-width:640px){.officials-grid{grid-template-columns:repeat(3,1fr);}}
+@media(max-width:380px){.officials-grid{grid-template-columns:repeat(2,1fr);}}
+.official-card{background:rgba(255,255,255,.04);border:1px solid rgba(201,168,76,.22);padding:24px 14px;text-align:center;border-radius:4px;transition:border-color .3s;}
+.official-card:hover{border-color:var(--gold);}
+.off-role{font-size:.65rem;color:var(--gold);letter-spacing:.18em;margin-bottom:8px;font-weight:700;}
+.off-name{font-family:'Noto Serif KR',serif;font-size:1.35rem;font-weight:700;color:var(--white);}
+
+/* 제단 */
+#jetan{background:var(--cream);}
+.jetan-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;}
+.jetan-card{background:var(--white);border:1px solid #ddd5bc;padding:24px;border-radius:4px;display:flex;gap:14px;}
+.jetan-icon{font-size:1.7rem;flex-shrink:0;}
+.jetan-card h3{font-family:'Noto Serif KR',serif;font-size:.95rem;font-weight:700;color:var(--ink);margin-bottom:7px;}
+.jetan-card p{font-size:.83rem;line-height:1.8;color:var(--stone);}
+
+/* 선조비석 */
+#ancestors{background:var(--autumn-pale);}
+.anc-intro{background:var(--white);border:1px solid #e8d4b8;border-left:4px solid var(--autumn);padding:20px 24px;border-radius:4px;margin-bottom:30px;}
+.anc-intro p{font-size:.88rem;line-height:1.88;color:var(--ink-mid);}
+.stele-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;}
+.stele-card{background:var(--white);border:1px solid #e0d0b8;border-radius:6px;overflow:hidden;box-shadow:0 4px 14px rgba(0,0,0,.06);}
+.stele-hdr{background:linear-gradient(135deg,#2d1e0e,#4a3218);padding:18px 22px;}
+.stele-hanja{font-family:'Noto Serif KR',serif;font-size:1.05rem;font-weight:700;color:var(--gold-light);letter-spacing:.06em;line-height:1.6;}
+.stele-body{padding:20px;}
+.stele-row{display:flex;gap:8px;margin-bottom:9px;align-items:flex-start;}
+.stele-lbl{font-size:.7rem;font-weight:700;color:var(--autumn);white-space:nowrap;margin-top:2px;min-width:44px;}
+.stele-val{font-size:.84rem;line-height:1.68;color:var(--ink-mid);}
+.stele-div{height:1px;background:#ead8c0;margin:12px 0;}
+
+/* LOCK */
+.lock-box{text-align:center;padding:64px 20px;background:linear-gradient(135deg,#f8f3e8,#f0e8d5);border:2px dashed #d4c5a5;border-radius:6px;max-width:480px;margin:0 auto;}
+.lock-icon{font-size:2.8rem;margin-bottom:14px;}
+.lock-title{font-family:'Noto Serif KR',serif;font-size:1.2rem;font-weight:700;color:var(--ink);margin-bottom:7px;}
+.lock-desc{font-size:.85rem;color:var(--stone);margin-bottom:20px;line-height:1.72;}
+.lock-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+.btn-lk-login{padding:9px 22px;background:var(--summer);color:var(--white);border:none;border-radius:4px;font-weight:700;font-size:.88rem;cursor:pointer;}
+.btn-lk-join{padding:9px 22px;background:transparent;color:var(--summer);border:1.5px solid var(--summer);border-radius:4px;font-weight:600;font-size:.88rem;cursor:pointer;}
+
+/* 묘소 */
+#tomb{background:var(--cream-dark);}
+.tomb-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;margin-bottom:28px;}
+.tomb-card{background:var(--white);border:1px solid #ddd5bc;border-top:3px solid var(--autumn);padding:22px;border-radius:4px;}
+.tomb-card h3{font-family:'Noto Serif KR',serif;font-size:.97rem;font-weight:700;color:var(--ink);margin-bottom:12px;}
+.tomb-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid #eee;font-size:.84rem;}
+.tomb-row:last-child{border-bottom:none;}
+.tomb-row .lbl{color:var(--stone);}
+.tomb-row .val{font-weight:600;color:var(--ink);}
+.tomb-row .paid{color:#1a7a4a;}
+.tomb-row .unpaid{color:var(--red);}
+.tomb-note{background:#fff8f0;border:1px solid var(--autumn);border-radius:4px;padding:18px 22px;}
+.tomb-note h4{font-family:'Noto Serif KR',serif;font-size:.97rem;font-weight:700;color:var(--ink);margin-bottom:8px;}
+.tomb-note p{font-size:.84rem;line-height:1.82;color:var(--ink-mid);}
+
+/* 재정 */
+#finance{background:var(--cream);}
+.fin-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px;margin-bottom:28px;}
+.fin-card{background:var(--white);border:1px solid #ddd5bc;border-top:3px solid var(--gold);padding:20px;border-radius:4px;}
+.fin-card .fl{font-size:.72rem;color:var(--stone);margin-bottom:7px;}
+.fin-card .fa{font-family:'Noto Serif KR',serif;font-size:1.55rem;font-weight:700;color:var(--ink);}
+.fin-card .fs{font-size:.72rem;color:var(--stone);margin-top:3px;}
+.fin-card.hl .fa{color:var(--gold-dark);}
+.fin-table-wrap{overflow-x:auto;}
+.fin-table{width:100%;border-collapse:collapse;font-size:.82rem;}
+.fin-table th{background:var(--ink);color:var(--gold);padding:9px 12px;text-align:left;font-size:.8rem;}
+.fin-table td{padding:9px 12px;border-bottom:1px solid #e0d4b8;}
+.fp{color:#1a7a4a;font-weight:600;}
+.fu{color:var(--red);font-weight:600;}
+
+/* 족보 */
+#genealogy{background:var(--cream-dark);}
+.gen-note{background:#fff8ec;border:1px solid var(--gold);border-radius:4px;padding:14px 18px;margin-bottom:24px;font-size:.83rem;line-height:1.78;color:var(--ink-mid);display:flex;gap:8px;}
+.gen-box{background:var(--white);border:1px solid #ddd5bc;padding:26px;border-radius:4px;}
+.gen-lbl{text-align:center;font-size:.7rem;color:var(--stone);letter-spacing:.16em;margin-bottom:12px;}
+.gen-nodes{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:20px;}
+.gen-node{background:var(--ink);color:var(--gold);font-family:'Noto Serif KR',serif;font-size:.85rem;font-weight:700;padding:9px 14px;border:1.5px solid var(--gold);border-radius:3px;text-align:center;}
+.gen-node.sub{background:var(--cream);color:var(--ink-mid);border-color:#ccc;font-weight:400;font-size:.75rem;line-height:1.4;}
+
+/* 연락처 */
+#contact{background:var(--cream);}
+.ctable-wrap{overflow-x:auto;}
+.ctable{width:100%;border-collapse:collapse;font-size:.82rem;}
+.ctable th{background:var(--ink);color:var(--gold);padding:9px 12px;text-align:left;white-space:nowrap;}
+.ctable td{padding:9px 12px;border-bottom:1px solid #e0d4b8;color:var(--ink-mid);}
+.ctable tr:hover td{background:rgba(201,168,76,.04);}
+.c-note{background:#fff8ec;border-left:3px solid var(--gold);padding:10px 14px;font-size:.78rem;color:var(--stone);margin-top:12px;border-radius:0 3px 3px 0;}
+
+/* 회칙 */
+#rules{background:var(--white);}
+.rules-wrap{max-width:760px;margin:0 auto;}
+.rule-art{border-left:3px solid var(--summer);padding:18px 22px;margin-bottom:18px;background:var(--cream);border-radius:0 4px 4px 0;}
+.rule-num{font-size:.7rem;color:var(--summer);font-weight:700;letter-spacing:.14em;margin-bottom:3px;}
+.rule-title{font-family:'Noto Serif KR',serif;font-size:.97rem;font-weight:700;color:var(--ink);margin-bottom:8px;}
+.rule-body{font-size:.85rem;line-height:1.9;color:var(--ink-mid);}
+.rules-amend{background:var(--cream-dark);border:1px solid #ddd5bc;padding:18px 22px;border-radius:4px;margin-top:24px;}
+.rules-amend h4{font-family:'Noto Serif KR',serif;font-size:.93rem;font-weight:700;color:var(--ink);margin-bottom:8px;}
+.rules-amend p{font-size:.81rem;color:var(--stone);line-height:1.82;}
+
+/* 사진첩 */
+#gallery{background:var(--cream-dark);}
+.gal-ctrl{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;flex-wrap:wrap;gap:10px;}
+.btn-upload{padding:9px 20px;background:var(--gold);color:var(--ink);border:none;border-radius:4px;font-weight:700;font-size:.83rem;cursor:pointer;}
+.gal-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;}
+.gal-empty{grid-column:1/-1;text-align:center;padding:52px 20px;color:var(--stone);}
+.ge-icon{font-size:2.8rem;margin-bottom:8px;}
+.g-item{position:relative;aspect-ratio:1;overflow:hidden;border-radius:4px;border:1px solid #ddd5bc;background:#f0ead8;}
+.g-item img{width:100%;height:100%;object-fit:cover;}
+.g-bar{position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,.55);padding:5px 9px;display:flex;justify-content:space-between;align-items:center;}
+.g-bar span{color:#fff;font-size:.66rem;}
+.g-del{background:none;border:none;color:#fff;cursor:pointer;font-size:.76rem;}
+
+/* 게시판 */
+#board{background:var(--cream);}
+.board-ctrl{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:8px;}
+.btn-write{padding:9px 20px;background:var(--gold);color:var(--ink);border:none;border-radius:4px;font-weight:700;font-size:.83rem;cursor:pointer;}
+.btable{width:100%;border-collapse:collapse;font-size:.83rem;background:var(--white);}
+.btable th{background:var(--ink);color:var(--gold);padding:9px 14px;text-align:left;font-size:.8rem;}
+.btable td{padding:11px 14px;border-bottom:1px solid #e0d4b8;color:var(--ink-mid);}
+.ptitle{color:var(--ink);font-weight:500;cursor:pointer;}
+.ptitle:hover{color:var(--summer);}
+.bempty{text-align:center;padding:44px;color:var(--stone);font-size:.83rem;}
+
+/* FOOTER */
+footer{background:linear-gradient(160deg,#0b1a0e,#142a17);border-top:2px solid var(--gold);padding:40px 20px;text-align:center;}
+.footer-logo{font-family:'Noto Serif KR',serif;font-size:1.15rem;font-weight:700;color:var(--gold);margin-bottom:6px;}
+.footer-sub{font-size:.76rem;color:#666;margin-bottom:8px;}
+.footer-div{width:36px;height:1px;background:var(--gold);margin:14px auto;opacity:.4;}
+.footer-info{font-size:.74rem;color:#555;line-height:1.82;}
+
+/* 계절줄 */
+.ss{display:flex;height:4px;}
+.ss>div{flex:1;}
+.ss .sp{background:var(--spring);}
+.ss .su{background:var(--summer);}
+.ss .au{background:var(--autumn);}
+.ss .wi{background:var(--winter);}
+</style>
+<!-- 카카오 SDK -->
+</head>
+<body>
+
+<div class="ss"><div class="sp"></div><div class="su"></div><div class="au"></div><div class="wi"></div></div>
+
+<!-- 로그인 모달 -->
+<div class="overlay" id="loginOverlay">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('loginOverlay')">✕</button>
+    <div class="modal-title">🔐 로그인</div>
+    <div class="modal-sub">성함과 휴대폰 번호로 로그인</div>
+    <div class="alert alert-error" id="loginError"></div>
+    <div class="form-group">
+      <label>성함</label>
+      <input type="text" id="loginName" placeholder="예) 종윤" style="font-size:1.05rem;padding:14px;">
+    </div>
+    <div class="form-group">
+      <label>휴대폰 번호</label>
+      <input type="tel" id="loginPhone" placeholder="010-0000-0000" style="font-size:1.05rem;padding:14px;" onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+    <button class="btn-primary" onclick="doLogin()" style="padding:15px;font-size:1rem;margin-top:6px;">로그인</button>
+    <div class="modal-switch">처음 오셨나요? <a onclick="switchModal('loginOverlay','joinOverlay')">회원가입</a></div>
+  </div>
+</div>
+
+<!-- 회원가입 모달 -->
+<div class="overlay" id="joinOverlay">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('joinOverlay')">✕</button>
+    <div class="modal-title">📝 회원가입</div>
+    <div class="modal-sub">성함 + 휴대폰 번호만으로 간편 가입!</div>
+    <div class="alert alert-error" id="joinError"></div>
+    <div class="alert alert-success" id="joinSuccess"></div>
+    <div class="form-group">
+      <label>성함 *</label>
+      <input type="text" id="joinName" placeholder="예) 종윤" style="font-size:1.05rem;padding:14px;">
+    </div>
+    <div class="form-group">
+      <label>휴대폰 번호 *</label>
+      <input type="tel" id="joinPhone" placeholder="010-0000-0000" style="font-size:1.05rem;padding:14px;">
+    </div>
+    <div class="form-group">
+      <label>회원 구분</label>
+      <select id="joinType" style="font-size:1rem;padding:13px;width:100%;border:1.5px solid #ddd;border-radius:4px;font-family:'Noto Serif KR',serif;">
+        <option value="준회원">준회원</option>
+        <option value="정회원">정회원</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>항렬/관계 (선택)</label>
+      <input type="text" id="joinGen" placeholder="예) 19세손 · 혁성의 자" style="font-size:1rem;padding:13px;">
+    </div>
+    <button class="btn-primary" onclick="doJoin()" style="padding:15px;font-size:1rem;margin-top:6px;">가입하기</button>
+    <div class="modal-switch">이미 가입하셨나요? <a onclick="switchModal('joinOverlay','loginOverlay')">로그인</a></div>
+  </div>
+</div>
+
+<!-- 글쓰기 모달 -->
+<div class="overlay" id="writeOverlay">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('writeOverlay')">✕</button>
+    <div class="modal-title">✏️ 글 쓰기</div>
+    <div class="form-group"><label>제목</label><input type="text" id="postTitle" placeholder="제목 입력"></div>
+    <div class="form-group"><label>내용</label><textarea id="postContent" rows="5" placeholder="내용을 입력하세요"></textarea></div>
+    <div class="form-group"><label>삭제 비밀번호 (4자 이상)</label><input type="password" id="postPw" placeholder="비밀번호"></div>
+    <button class="btn-primary" onclick="submitPost()">등록하기</button>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header>
+  <div class="header-inner">
+    <div class="logo" onclick="scrollTo(0,0)">
+      <div class="logo-char">吳</div>
+      <div class="logo-text">
+        <span class="main">해주오씨 시중공파</span>
+        <span class="sub">18세손 재급이하 합동제단</span>
+      </div>
+    </div>
+    <div class="header-actions">
+      <div class="user-info" id="userInfo">
+        <span class="user-name" id="userGreet"></span>
+        <button class="btn-logout" onclick="doLogout()">로그아웃</button>
+      </div>
+      <div id="guestAct">
+        <button class="btn-h-login" onclick="openModal('loginOverlay')">로그인</button>
+        <button class="btn-h-join" onclick="openModal('joinOverlay')">회원가입</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- SECTION NAV -->
+<nav class="snav">
+  <div class="snav-inner">
+    <a onclick="goSec('intro')">가문소개</a>
+    <a onclick="goSec('history')">연혁</a>
+    <a onclick="goSec('officials')">임원</a>
+    <a onclick="goSec('jetan')">제단안내</a>
+    <a onclick="goSec('ancestors')">선조비석</a>
+    <a onclick="goSec('tomb')">묘소조성<span class="mtag">회원</span></a>
+    <a onclick="goSec('finance')">재정현황<span class="mtag">회원</span></a>
+    <a onclick="goSec('genealogy')">족보<span class="mtag">회원</span></a>
+    <a onclick="goSec('contact')">연락처<span class="mtag">회원</span></a>
+    <a onclick="goSec('rules')">회칙<span class="mtag">회원</span></a>
+    <a onclick="goSec('gallery')">사진첩<span class="mtag">회원</span></a>
+    <a onclick="goSec('board')">게시판</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="sl spring" id="sl-spring"></div>
+  <div class="sl summer on" id="sl-summer"></div>
+  <div class="sl autumn" id="sl-autumn"></div>
+  <div class="sl winter" id="sl-winter"></div>
+  <div class="tea-pat"></div>
+  <div class="hero-bg-c">吳</div>
+  <div class="hero-content">
+    <div class="hero-badge"><span class="s-dot"></span>海州吳氏 · 侍中公派 · 전라남도 보성</div>
+    <div class="hero-hanja">吳</div>
+    <h1 class="hero-title">해주오씨</h1>
+    <div class="hero-sub">시중공파 · 侍中公派</div>
+    <div class="hero-desc">18세손 재급이하 합동제단 · 전남 보성</div>
+    <div class="hero-div"><span>◆</span></div>
+    <div class="hero-stats">
+      <div class="stat-item"><span class="stat-num">1997</span><span class="stat-label">창립 연도</span></div>
+      <div class="stat-item"><span class="stat-num">21명</span><span class="stat-label">정회원</span></div>
+      <div class="stat-item"><span class="stat-num">29년</span><span class="stat-label">종친회 역사</span></div>
+    </div>
+    <div class="season-label" id="seasonLabel">🌿 여름 · 보성 녹차밭의 짙은 초록</div>
+  </div>
+</section>
+
+<!-- 가문소개 -->
+<section id="intro">
+  <div class="container">
+    <div class="section-header"><span class="stag">Our Clan · 가문 소개</span><h2 class="stitle">해주오씨의 유래와 시중공파</h2><div class="sline"></div></div>
+    <div class="intro-grid">
+      <div class="intro-card"><span class="intro-icon">海</span><h3>海州吳氏 시조</h3><p>해주오씨(海州吳氏)는 황해도 해주를 본관으로 하는 성씨입니다. 시조 오인유(吳仁裕)는 고려 시대에 벼슬을 지낸 분으로, 그 후손들이 해주 일대에 세거하며 씨족을 이루었습니다.</p></div>
+      <div class="intro-card"><span class="intro-icon">侍</span><h3>시중공파(侍中公派)</h3><p>侍中의 벼슬을 지낸 분을 파조로 하는 파로, 대대로 충절과 학문을 가풍으로 이어왔습니다. 현재 18세손 재급(在及) 이하 후손들이 합동제단을 운영하고 있습니다.</p></div>
+      <div class="intro-card"><span class="intro-icon">祭</span><h3>합동제단의 취지</h3><p>매년 음력 10월 19일 이전 일요일, 전남 보성에서 시제 행사를 봉행하며, 선조의 음덕을 기리고 종친 간의 화목을 다지고 있습니다.</p></div>
+      <div class="intro-card"><span class="intro-icon">地</span><h3>문중 부동산</h3><p>작은재너머 214답(64평), 215답(408평), 비까리 447번지(469평) — 총 941평 보유. 안산 가족묘지 조성 완료(2026년 3월).</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 연혁 -->
+<section id="history">
+  <div class="container">
+    <div class="section-header"><span class="stag">History · 연혁</span><h2 class="stitle">문중의 주요 연혁</h2><div class="sline"></div></div>
+    <div class="timeline">
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-card"><div class="tl-era">고려 시대</div><h3>해주오씨 시조 입향</h3><p>시조 오인유(吳仁裕)께서 황해도 해주에 세거하시며 뿌리를 내리셨습니다.</p></div></div>
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-card"><div class="tl-era">조선 시대</div><h3>시중공파 분파</h3><p>侍中 벼슬을 지낸 파조를 중심으로 시중공파가 형성되었습니다.</p></div></div>
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-card"><div class="tl-era">1997. 11. 17</div><h3>합동제단 결성 · 회칙 제정</h3><p>18세손 재급 이하 후손들이 합동제단을 결성하고 회칙을 제정했습니다.</p></div></div>
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-card"><div class="tl-era">2024. 12. 12</div><h3>가족묘지 예정지 탐방</h3><p>지관 대동 현장 탐방. 종윤·우종·지관 참석.</p></div></div>
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-card"><div class="tl-era">2025. 10. 22</div><h3>보성 석물공장 방문</h3><p>가족묘지 조성 준비 — 보성 석물공장 방문.</p></div></div>
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-card"><div class="tl-era">2026. 03. 29</div><h3>회칙 개정 · 가족묘지 완공</h3><p>회칙 개정 시행. 공사비 4,300만원 지급 완료.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 임원 -->
+<section id="officials">
+  <div class="container">
+    <div class="section-header"><span class="stag wt">Officials · 임원</span><h2 class="stitle stitle-w">임원 구성</h2><div class="sline"></div></div>
+    <div class="officials-grid">
+      <div class="official-card"><div class="off-role">고 문</div><div class="off-name">우 종</div></div>
+      <div class="official-card"><div class="off-role">회 장</div><div class="off-name">종 윤</div></div>
+      <div class="official-card"><div class="off-role">부회장</div><div class="off-name">종 국</div></div>
+      <div class="official-card"><div class="off-role">부회장</div><div class="off-name">삼 종</div></div>
+      <div class="official-card"><div class="off-role">총무/간사</div><div class="off-name">혁 성</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 제단 -->
+<section id="jetan">
+  <div class="container">
+    <div class="section-header"><span class="stag">祭壇 · 제단 안내</span><h2 class="stitle">합동제단 안내</h2><div class="sline"></div></div>
+    <div class="jetan-grid">
+      <div class="jetan-card"><div class="jetan-icon">🗓️</div><div><h3>제례 일정</h3><p>시제: 음력 10월 19일 이전 일요일. 봄 모임 검토 중. 연 1회 정기 모임.</p></div></div>
+      <div class="jetan-card"><div class="jetan-icon">📍</div><div><h3>제례 장소</h3><p>전남 안산 소재 가족묘지 (2026년 완공). 변경 시 사전 공지.</p></div></div>
+      <div class="jetan-card"><div class="jetan-icon">📋</div><div><h3>참석 안내</h3><p>정·준회원 전원 참석 대상. 참석 전 총무께 사전 연락 요망.</p></div></div>
+      <div class="jetan-card"><div class="jetan-icon">🍽️</div><div><h3>제수 준비</h3><p>문중 공동 준비. 개인 준비 원하시면 사전 협의 바랍니다.</p></div></div>
+      <div class="jetan-card"><div class="jetan-icon">👔</div><div><h3>복장 안내</h3><p>한복 착용 권장, 정장도 무방합니다.</p></div></div>
+      <div class="jetan-card"><div class="jetan-icon">💰</div><div><h3>종중 회비</h3><p>정회원(학생 제외) 연 6만원. 문의: 총무 혁성 010-9098-1481</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 선조비석 -->
+<section id="ancestors">
+  <div class="container">
+    <div class="section-header"><span class="stag at">先祖碑石 · 선조 비석</span><h2 class="stitle">재급 조상 비석 기록</h2><div class="sline"></div></div>
+    <div class="anc-intro"><p>전남 보성군 소재 선산(천마산 일원)에 모셔진 선조의 비석 기록입니다. 단기 4300년(1967년) 8월 세워졌으며, 성산이백부(星山李柏浮)가 글씨를 쓰셨습니다.</p></div>
+    <div class="stele-grid">
+      <div class="stele-card">
+        <div class="stele-hdr"><div class="stele-hanja">學生 海州吳公 達孝之墓</div></div>
+        <div class="stele-body">
+          <div class="stele-row"><span class="stele-lbl">비문 앞면</span><span class="stele-val">학생 해주오씨 공 달효지묘(達孝之墓)</span></div>
+          <div class="stele-div"></div>
+          <div class="stele-row"><span class="stele-lbl">祔 左</span><span class="stele-val">진원박씨(珍原朴氏) 부좌</span></div>
+          <div class="stele-row"><span class="stele-lbl">孫人</span><span class="stele-val">낙원윤씨(濼原尹氏) 동강양원</span></div>
+          <div class="stele-div"></div>
+          <div class="stele-row"><span class="stele-lbl">의미</span><span class="stele-val">오공과 진원박씨 합장묘. 손인 낙원윤씨 동강 안장.</span></div>
+        </div>
+      </div>
+      <div class="stele-card">
+        <div class="stele-hdr"><div class="stele-hanja">學生吳公 墓表<br>以宗中命 來請</div></div>
+        <div class="stele-body">
+          <div class="stele-row"><span class="stele-lbl">비문 뒷면</span><span class="stele-val">이종중명 래청문자 향금종삼야(香金鍾三也)</span></div>
+          <div class="stele-row"><span class="stele-lbl">건립</span><span class="stele-val">단기 4300년 자(子) 8월</span></div>
+          <div class="stele-row"><span class="stele-lbl">글씨</span><span class="stele-val">성산이백부서(星山李柏浮書)</span></div>
+          <div class="stele-div"></div>
+          <div class="stele-row"><span class="stele-lbl">비문 측면</span><span class="stele-val">보성치 40리 산 천마(天馬), 탄동(炭洞) 지맥, 丁방향</span></div>
+          <div class="stele-row"><span class="stele-lbl">공 생몰</span><span class="stele-val">병종(丙種) 정월 14일 생, 졸(卒) 정조 평(平)</span></div>
+          <div class="stele-div"></div>
+          <div class="stele-row"><span class="stele-lbl">묘소</span><span class="stele-val">전남 보성군 천마산 줄기 탄동마을 인근 선산</span></div>
+        </div>
+      </div>
+      <div class="stele-card">
+        <div class="stele-hdr"><div class="stele-hanja">族譜 계보도<br>시중공파 18세손 계열</div></div>
+        <div class="stele-body">
+          <div class="stele-row"><span class="stele-lbl">18세손</span><span class="stele-val">우종·승태·길종·원준·금주·삼종·혁성·재인·종윤·호진 등 정회원 21명</span></div>
+          <div class="stele-row"><span class="stele-lbl">19세손</span><span class="stele-val">명진·명현(혁성의 자), 승철(재인의 자), 진우(종윤의 자) 등 준회원 9명</span></div>
+          <div class="stele-div"></div>
+          <div class="stele-row"><span class="stele-lbl">족보 상세</span><span class="stele-val">회원 전용 족보 메뉴에서 확인하실 수 있습니다.</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 묘소 조성 — 회원 전용 -->
+<section id="tomb">
+  <div class="container">
+    <div id="tombContent" style="display:none;">
+      <div class="section-header"><span class="stag at">墓所 · 묘소 조성</span><h2 class="stitle">가족묘지 조성 현황</h2><div class="sline"></div></div>
+      <div class="tomb-grid">
+        <div class="tomb-card">
+          <h3>📍 묘소 기본 정보</h3>
+          <div class="tomb-row"><span class="lbl">위 치</span><span class="val">전남 안산 소재</span></div>
+          <div class="tomb-row"><span class="lbl">조성 완료</span><span class="val paid">2026년 3월 ✓</span></div>
+          <div class="tomb-row"><span class="lbl">부동산 대표 1·2조</span><span class="val">호진</span></div>
+          <div class="tomb-row"><span class="lbl">부동산 대표 4조</span><span class="val">금주</span></div>
+          <div class="tomb-row"><span class="lbl">현장 방문</span><span class="val">'25.11~'26.3 (15차 이상)</span></div>
+        </div>
+        <div class="tomb-card">
+          <h3>💰 묘소 조성 비용</h3>
+          <div class="tomb-row"><span class="lbl">공사비</span><span class="val paid">4,300만원 ✓</span></div>
+          <div class="tomb-row"><span class="lbl">수도관 파손 배상</span><span class="val paid">30만원 ✓</span></div>
+          <div class="tomb-row"><span class="lbl">6대조부모 묘 벌목</span><span class="val paid">30만원 ✓</span></div>
+          <div class="tomb-row"><span class="lbl">지 관</span><span class="val paid">150만원 ✓</span></div>
+          <div class="tomb-row"><span class="lbl">토 지</span><span class="val unpaid">700만원 (미지급)</span></div>
+          <div class="tomb-row"><span class="lbl">기타</span><span class="val paid">141만원 ✓</span></div>
+          <div class="tomb-row" style="font-weight:700;border-top:2px solid #ddd;padding-top:10px;margin-top:4px;"><span class="lbl">비용 총계</span><span class="val" style="color:var(--red);">5,351만원</span></div>
+        </div>
+        <div class="tomb-card">
+          <h3>📊 자금 현황</h3>
+          <div class="tomb-row"><span class="lbl">기존 자금</span><span class="val">4,031만원</span></div>
+          <div class="tomb-row"><span class="lbl">추가 입금</span><span class="val paid">+1,143만원</span></div>
+          <div class="tomb-row"><span class="lbl">자금 합계</span><span class="val">5,174만원</span></div>
+          <div class="tomb-row"><span class="lbl">비용 총계</span><span class="val" style="color:var(--red);">5,351만원</span></div>
+          <div class="tomb-row" style="font-weight:700;"><span class="lbl">부족액</span><span class="val unpaid">-177만원</span></div>
+          <div class="tomb-row"><span class="lbl">추가납입 예정</span><span class="val">500만원 (안병선)</span></div>
+        </div>
+      </div>
+      <div class="tomb-note">
+        <h4>🗺️ 선산 위치 안내</h4>
+        <p>원 선산: 전남 <strong>보성</strong>에서 40리, <strong>천마산(天馬山)</strong> 한 줄기 지맥 — 마을명 <strong>탄동(炭洞)</strong>, 丁방향.<br><br>신규 가족묘지: <strong>전남 안산</strong> (2026년 3월 완공). 위치 문의: 총무 혁성 010-9098-1481</p>
+      </div>
+    </div>
+    <div id="tombLock"><div class="lock-box"><div class="lock-icon">🪦</div><div class="lock-title">회원 전용 콘텐츠</div><div class="lock-desc">묘소 조성 현황 및 비용 상세는<br>종친 회원만 열람하실 수 있습니다.</div><div class="lock-btns"><button class="btn-lk-login" onclick="openModal('loginOverlay')">로그인</button><button class="btn-lk-join" onclick="openModal('joinOverlay')">회원가입</button></div></div></div>
+  </div>
+</section>
+
+<!-- 재정 현황 — 회원 전용 -->
+<section id="finance" style="background:var(--cream);">
+  <div class="container">
+    <div id="financeContent" style="display:none;">
+      <div class="section-header"><span class="stag gt">Finance · 재정 현황</span><h2 class="stitle">문중 재정 현황</h2><div class="sline"></div></div>
+      <div class="fin-cards">
+        <div class="fin-card hl"><div class="fl">총 자금 (2026.03.29)</div><div class="fa">5,174만원</div><div class="fs">40,312,469원 + 추가입금 1,143만원</div></div>
+        <div class="fin-card"><div class="fl">과학기술공제 ①</div><div class="fa">1,100만원</div><div class="fs">연 4.0% · 만기 2026.05.08</div></div>
+        <div class="fin-card"><div class="fl">과학기술공제 ②</div><div class="fa">1,000만원</div><div class="fs">연 4.0% · 만기 2026.05.08</div></div>
+        <div class="fin-card"><div class="fl">자유저축 잔액</div><div class="fa">1,931만원</div><div class="fs">19,312,469원</div></div>
+      </div>
+      <div class="fin-table-wrap">
+        <table class="fin-table">
+          <thead><tr><th>항목</th><th>금액</th><th>상태</th><th>비고</th></tr></thead>
+          <tbody>
+            <tr><td>공사비</td><td>43,000,000원</td><td class="fp">지급 완료</td><td></td></tr>
+            <tr><td>수도관 파손 배상</td><td>300,000원</td><td class="fp">지급 완료</td><td>50만원 중</td></tr>
+            <tr><td>6대조부모 묘 벌목</td><td>300,000원</td><td class="fp">지급 완료</td><td></td></tr>
+            <tr><td>지 관</td><td>1,500,000원</td><td class="fp">지급 완료</td><td></td></tr>
+            <tr><td>토 지</td><td>7,000,000원</td><td class="fu">미지급</td><td></td></tr>
+            <tr><td>기타 비용</td><td>1,410,000원</td><td class="fp">지급 완료</td><td>선물·식비 등</td></tr>
+            <tr style="background:#fff8ec;font-weight:700;"><td>비용 총계</td><td>53,510,000원</td><td colspan="2" style="color:var(--red);">부족 -177만원 → 추가납입 500만원 예정</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="margin-top:12px;font-size:.78rem;color:var(--stone);">※ 추가 납입: 안병선 (100만원/년 × 5년)</p>
+    </div>
+    <div id="financeLock"><div class="lock-box"><div class="lock-icon">💰</div><div class="lock-title">회원 전용 콘텐츠</div><div class="lock-desc">재정 현황은 종친 회원만 열람하실 수 있습니다.</div><div class="lock-btns"><button class="btn-lk-login" onclick="openModal('loginOverlay')">로그인</button><button class="btn-lk-join" onclick="openModal('joinOverlay')">회원가입</button></div></div></div>
+  </div>
+</section>
+
+<!-- 족보 — 회원 전용 -->
+<section id="genealogy">
+  <div class="container">
+    <div id="genealogyContent" style="display:none;">
+      <div class="section-header"><span class="stag">族譜 · 족보</span><h2 class="stitle">해주오씨 시중공파 계보</h2><div class="sline"></div></div>
+      <div class="gen-note"><span>ℹ️</span><span>18세손 재급이하 자손 모임 자료 기준. 누락 회원은 총무 혁성 (010-9098-1481)에게 연락 바랍니다.</span></div>
+      <!-- 세계도 사진 -->
+      
+      <div class="gen-box">
+        <div class="gen-lbl">— 18세손 정회원 (21명) —</div>
+        <div class="gen-nodes">
+          <div class="gen-node">우종</div><div class="gen-node">승태</div><div class="gen-node">길종</div><div class="gen-node">원준</div><div class="gen-node">금주</div><div class="gen-node">삼종</div><div class="gen-node">영준</div><div class="gen-node">영일</div><div class="gen-node">혁성</div><div class="gen-node">재인</div><div class="gen-node">종윤</div><div class="gen-node">호진</div><div class="gen-node">진우</div><div class="gen-node">승옥</div><div class="gen-node">경문</div><div class="gen-node">관우</div><div class="gen-node">관영</div><div class="gen-node">관용</div><div class="gen-node">종수</div><div class="gen-node">종화</div><div class="gen-node">종국</div>
+        </div>
+        <div class="gen-lbl" style="margin-top:16px;">— 19세손 준회원 (9명) —</div>
+        <div class="gen-nodes">
+          <div class="gen-node sub">명진/명현<br><small>혁성의 자</small></div><div class="gen-node sub">승 철<br><small>재인의 자</small></div><div class="gen-node sub">진 우<br><small>종윤의 자</small></div><div class="gen-node sub">광 우<br><small>종국의 자</small></div><div class="gen-node sub">상 원<br><small>정원의 자</small></div><div class="gen-node sub">동 원<br><small>삼종의 자</small></div><div class="gen-node sub">동 현<br><small>승태의 자</small></div><div class="gen-node sub">승 환<br><small>금주의 자</small></div><div class="gen-node sub">현 수<br><small>현필</small></div>
+        </div>
+      </div>
+
+      <!-- ─────────────────────────────────── -->
+      <!-- 시중공파 세계 계보표                  -->
+      <!-- ─────────────────────────────────── -->
+      <div style="margin-top:32px;">
+        <div style="text-align:center;margin-bottom:20px;">
+          <div style="font-size:.68rem;letter-spacing:.22em;color:#8b6914;margin-bottom:6px;">世系 · 세계</div>
+          <div style="font-family:'Noto Serif KR',serif;font-size:1.1rem;font-weight:900;letter-spacing:.12em;color:#1a1208;">시중공파 18세손 재급이하 계보</div>
+        </div>
+
+        <div style="overflow-x:auto;">
+          <table style="width:100%;border-collapse:collapse;font-family:'Noto Serif KR',serif;font-size:.82rem;">
+            <thead>
+              <tr style="background:#1a1208;color:#e8c96a;">
+                <th style="padding:11px 14px;letter-spacing:.12em;font-weight:700;text-align:center;white-space:nowrap;">세대</th>
+                <th style="padding:11px 14px;letter-spacing:.12em;font-weight:700;text-align:left;">이름</th>
+                <th style="padding:11px 14px;letter-spacing:.12em;font-weight:700;text-align:left;">부(父)</th>
+                <th style="padding:11px 14px;letter-spacing:.12em;font-weight:700;text-align:left;">비고</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- 1세 (시조) -->
+              <tr style="background:#f7f3eb;">
+                <td style="padding:10px 14px;text-align:center;font-weight:900;color:#8b1a1a;border-bottom:1px solid #ddd5bc;">1세</td>
+                <td style="padding:10px 14px;font-weight:800;color:#1a1208;border-bottom:1px solid #ddd5bc;">吳仁裕 (오인유)</td>
+                <td style="padding:10px 14px;color:#666;border-bottom:1px solid #ddd5bc;">—</td>
+                <td style="padding:10px 14px;color:#8b6914;border-bottom:1px solid #ddd5bc;">시조 · 해주오씨 중시조</td>
+              </tr>
+              <!-- 파조 -->
+              <tr style="background:#fff;">
+                <td style="padding:10px 14px;text-align:center;font-weight:900;color:#8b1a1a;border-bottom:1px solid #ddd5bc;">파조</td>
+                <td style="padding:10px 14px;font-weight:800;color:#1a1208;border-bottom:1px solid #ddd5bc;">侍中公 (시중공)</td>
+                <td style="padding:10px 14px;color:#666;border-bottom:1px solid #ddd5bc;">—</td>
+                <td style="padding:10px 14px;color:#8b6914;border-bottom:1px solid #ddd5bc;">시중공파 파조 · 侍中 벼슬</td>
+              </tr>
+              <!-- 구분선 -->
+              <tr style="background:#8b1a1a;">
+                <td colspan="4" style="padding:5px 14px;text-align:center;color:#e8c96a;font-size:.72rem;letter-spacing:.18em;">↓ 세대를 거쳐 ↓</td>
+              </tr>
+              <!-- 14세 -->
+              <tr style="background:#f7f3eb;">
+                <td style="padding:10px 14px;text-align:center;font-weight:900;color:#2d4a1e;border-bottom:1px solid #ddd5bc;">14세</td>
+                <td style="padding:10px 14px;font-weight:700;border-bottom:1px solid #ddd5bc;">재 급 (在及)</td>
+                <td style="padding:10px 14px;color:#666;border-bottom:1px solid #ddd5bc;">—</td>
+                <td style="padding:10px 14px;color:#8b6914;border-bottom:1px solid #ddd5bc;">18세손 재급이하 합동제단 기준 조상</td>
+              </tr>
+              <!-- 15세 -->
+              <tr style="background:#fff;">
+                <td rowspan="2" style="padding:10px 14px;text-align:center;font-weight:900;color:#2d4a1e;border-bottom:1px solid #ddd5bc;vertical-align:middle;">15세</td>
+                <td style="padding:10px 14px;font-weight:700;border-bottom:1px solid #ddd5bc;">장파 계열</td>
+                <td style="padding:10px 14px;color:#666;border-bottom:1px solid #ddd5bc;">재급</td>
+                <td style="padding:10px 14px;color:#666;border-bottom:1px solid #ddd5bc;"></td>
+              </tr>
+              <tr style="background:#fff;">
+                <td style="padding:10px 14px;font-weight:700;border-bottom:1px solid #ddd5bc;">차파 계열</td>
+                <td style="padding:10px 14px;color:#666;border-bottom:1px solid #ddd5bc;">재급</td>
+                <td style="padding:10px 14px;color:#666;border-bottom:1px solid #ddd5bc;"></td>
+              </tr>
+              <!-- 구분선 -->
+              <tr style="background:#2d4a1e;">
+                <td colspan="4" style="padding:5px 14px;text-align:center;color:#e8c96a;font-size:.72rem;letter-spacing:.18em;">— 18세손 정회원 (21명) —</td>
+              </tr>
+              <!-- 18세손 정회원 -->
+              <tr style="background:#f7f3eb;">
+                <td rowspan="21" style="padding:10px 14px;text-align:center;font-weight:900;color:#8b1a1a;border-bottom:1px solid #ddd5bc;vertical-align:top;">18세<br/>(정회원)</td>
+                <td style="padding:9px 14px;font-weight:700;color:#1a1208;border-bottom:1px solid #eee;">우 종</td>
+                <td style="padding:9px 14px;color:#666;border-bottom:1px solid #eee;"></td>
+                <td style="padding:9px 14px;color:#8b6914;border-bottom:1px solid #eee;">고문 · 1946.4.28(음)</td>
+              </tr>
+              <tr style="background:#fff;">
+                <td style="padding:9px 14px;font-weight:700;border-bottom:1px solid #eee;">승 태</td>
+                <td style="padding:9px 14px;color:#666;border-bottom:1px solid #eee;"></td>
+                <td style="padding:9px 14px;color:#8b6914;border-bottom:1px solid #eee;">1948.8.5(음)</td>
+              </tr>
+              <tr style="background:#f7f3eb;">
+                <td style="padding:9px 14px;font-weight:700;border-bottom:1px solid #eee;">길 종</td>
+                <td style="padding:9px 14px;color:#666;border-bottom:1px solid #eee;"></td>
+                <td style="padding:9px 14px;color:#666;border-bottom:1px solid #eee;"></td>
+              </tr>
+              <tr style="background:#fff;">
+                <td style="padding:9px 14px;font-weight:700;border-bottom:1px solid #eee;">원준 (경구)</td>
+                <td style="padding:9px 14px;color:#666;border-bottom:1px solid #eee;"></td>
+                <td style="padding:9px 14px;color:#666;border-bottom:1px solid #eee;"></td>
+              </tr>
+              <tr style="background:#f7f3eb;">
+                <td style="padding:9px 14px;font-weight:700;border-bottom:1px solid #eee;">금 주</td>
+                <td style="padding:9px 14px;color:#666;border-bottom:1px solid #eee;"></td>
+                <td style="padding:9px 14px;color:#666;border-bottom:1px solid #eee;"></td>
+              </tr>
+              <tr style="background:#fff;">
+                <td style="padding:9px 14px;font-weight:700;border-bottom:1px solid #eee;">삼 종</td>
+                <td style="padding:9px 14px;color:#666;border-bottom:1px solid #eee;"></td>
+                <td style="padding:9px 14px;color:#8b6914;border-bottom:1px solid #eee;">부회장</td>
+              </tr>
+              <tr style="background:#f7f3eb;">
+                <td style="padding:9px 14px;font-weight:700;border-bottom:1px solid #eee;">영 준</td>
+                <td style="padding:9px 14px;color:#666;border-bottom:1px solid #eee;"></td>
+                <td style="padding:9px 14px;color:#666;border-bottom:1px solid #eee;"></td>
+              </tr>
+              <tr style="background:#fff;">
+                <td style="padding:9px 14px;font-weight:700;border-bottom:1px solid #eee;">영 일</td>
+                <td style="padding:9px 14px;color:#666;border-bottom:1px solid #eee;"></td>
+                <td style="padding:9px 14px;color:#666;border-bottom:1px solid #eee;"></td>
+              </tr>
+              <tr style="background:#f7f3eb;">
+                <td style="padding:9px 14px;font-weight:700;border-bottom:1px solid #eee;">혁 성</td>
+                <td style="padding:9px 14px;color:#666;border-bottom:1px solid #eee;"></td>
+                <td style="padding:9px 14px;color:#8b6914;border-bottom:1px solid #eee;">총무/간사</td>
+              </tr>
+              <tr style="background:#fff;">
+                <td style="padding:9px 14px;font-weight:700;border-bottom:1px solid #eee;">재 인</td>
+                <td style="padding:9px 14px;color:#666;border-bottom:1px solid #eee;"></td>
+                <td style="padding:9px 14px;color:#666;border-bottom:1px solid #eee;">1970.10.20(음)</td>
+              </tr>
+              <tr style="background:#f7f3eb;">
+                <td style="padding:9px 14px;font-weight:700;border-bottom:1px solid #eee;">종 윤</td>
+                <td style="padding:9px 14px;color:#666;border-bottom:1px solid #eee;"></td>
+                <td style="padding:9px 14px;color:#8b1a1a;font-weight:700;border-bottom:1px solid #eee;">회 장</td>
+              </tr>
+              <tr style="background:#fff;">
+                <td style="padding:9px 14px;font-weight:700;border-bottom:1px solid #eee;">호 진</td>
+                <td style="padding:9px 14px;color:#666;border-bottom:1px solid #eee;"></td>
+                <td style="padding:9px 14px;color:#666;border-bottom:1px solid #eee;"></td>
+              </tr>
+              <tr style="background:#f7f3eb;">
+                <td style="padding:9px 14px;font-weight:700;border-bottom:1px solid #eee;">승 옥</td>
+                <td style="padding:9px 14px;color:#666;border-bottom:1px solid #eee;"></td>
+                <td style="padding:9px 14px;color:#666;border-bottom:1px solid #eee;"></td>
+              </tr>
+              <tr style="background:#fff;">
+                <td style="padding:9px 14px;font-weight:700;border-bottom:1px solid #eee;">경 문</td>
+                <td style="padding:9px 14px;color:#666;border-bottom:1px solid #eee;"></td>
+                <td style="padding:9px 14px;color:#666;border-bottom:1px solid #eee;"></td>
+              </tr>
+              <tr style="background:#f7f3eb;">
+                <td style="padding:9px 14px;font-weight:700;border-bottom:1px solid #eee;">관 우</td>
+                <td style="padding:9px 14px;color:#666;border-bottom:1px solid #eee;"></td>
+                <td style="padding:9px 14px;color:#666;border-bottom:1px solid #eee;"></td>
+              </tr>
+              <tr style="background:#fff;">
+                <td style="padding:9px 14px;font-weight:700;border-bottom:1px solid #eee;">관 영</td>
+                <td style="padding:9px 14px;color:#666;border-bottom:1px solid #eee;"></td>
+                <td style="padding:9px 14px;color:#666;border-bottom:1px solid #eee;"></td>
+              </tr>
+              <tr style="background:#f7f3eb;">
+                <td style="padding:9px 14px;font-weight:700;border-bottom:1px solid #eee;">관 용</td>
+                <td style="padding:9px 14px;color:#666;border-bottom:1px solid #eee;"></td>
+                <td style="padding:9px 14px;color:#666;border-bottom:1px solid #eee;"></td>
+              </tr>
+              <tr style="background:#fff;">
+                <td style="padding:9px 14px;font-weight:700;border-bottom:1px solid #eee;">종 수</td>
+                <td style="padding:9px 14px;color:#666;border-bottom:1px solid #eee;"></td>
+                <td style="padding:9px 14px;color:#666;border-bottom:1px solid #eee;"></td>
+              </tr>
+              <tr style="background:#f7f3eb;">
+                <td style="padding:9px 14px;font-weight:700;border-bottom:1px solid #eee;">종 화</td>
+                <td style="padding:9px 14px;color:#666;border-bottom:1px solid #eee;"></td>
+                <td style="padding:9px 14px;color:#666;border-bottom:1px solid #eee;"></td>
+              </tr>
+              <tr style="background:#fff;">
+                <td style="padding:9px 14px;font-weight:700;border-bottom:1px solid #eee;">종 국</td>
+                <td style="padding:9px 14px;color:#666;border-bottom:1px solid #eee;"></td>
+                <td style="padding:9px 14px;color:#8b6914;border-bottom:1px solid #eee;">부회장</td>
+              </tr>
+              <tr style="background:#f7f3eb;">
+                <td style="padding:9px 14px;font-weight:700;border-bottom:1px solid #ddd5bc;">현 필</td>
+                <td style="padding:9px 14px;color:#666;border-bottom:1px solid #ddd5bc;"></td>
+                <td style="padding:9px 14px;color:#666;border-bottom:1px solid #ddd5bc;"></td>
+              </tr>
+              <!-- 구분선 -->
+              <tr style="background:#2d4a1e;">
+                <td colspan="4" style="padding:5px 14px;text-align:center;color:#e8c96a;font-size:.72rem;letter-spacing:.18em;">— 19세손 준회원 (9명) —</td>
+              </tr>
+              <!-- 19세손 준회원 -->
+              <tr style="background:#f0ede4;">
+                <td rowspan="9" style="padding:10px 14px;text-align:center;font-weight:900;color:#2d4a1e;border-bottom:1px solid #ddd5bc;vertical-align:top;">19세<br/>(준회원)</td>
+                <td style="padding:9px 14px;border-bottom:1px solid #eee;">명진 / 명현</td>
+                <td style="padding:9px 14px;color:#2d4a1e;font-weight:600;border-bottom:1px solid #eee;">혁성</td>
+                <td style="padding:9px 14px;color:#666;border-bottom:1px solid #eee;"></td>
+              </tr>
+              <tr style="background:#fff;">
+                <td style="padding:9px 14px;border-bottom:1px solid #eee;">승 철</td>
+                <td style="padding:9px 14px;color:#2d4a1e;font-weight:600;border-bottom:1px solid #eee;">재인</td>
+                <td style="padding:9px 14px;color:#666;border-bottom:1px solid #eee;"></td>
+              </tr>
+              <tr style="background:#f0ede4;">
+                <td style="padding:9px 14px;border-bottom:1px solid #eee;">진 우</td>
+                <td style="padding:9px 14px;color:#2d4a1e;font-weight:600;border-bottom:1px solid #eee;">종윤</td>
+                <td style="padding:9px 14px;color:#666;border-bottom:1px solid #eee;"></td>
+              </tr>
+              <tr style="background:#fff;">
+                <td style="padding:9px 14px;border-bottom:1px solid #eee;">광 우</td>
+                <td style="padding:9px 14px;color:#2d4a1e;font-weight:600;border-bottom:1px solid #eee;">종국</td>
+                <td style="padding:9px 14px;color:#666;border-bottom:1px solid #eee;"></td>
+              </tr>
+              <tr style="background:#f0ede4;">
+                <td style="padding:9px 14px;border-bottom:1px solid #eee;">상 원</td>
+                <td style="padding:9px 14px;color:#2d4a1e;font-weight:600;border-bottom:1px solid #eee;">정원</td>
+                <td style="padding:9px 14px;color:#666;border-bottom:1px solid #eee;"></td>
+              </tr>
+              <tr style="background:#fff;">
+                <td style="padding:9px 14px;border-bottom:1px solid #eee;">동 원</td>
+                <td style="padding:9px 14px;color:#2d4a1e;font-weight:600;border-bottom:1px solid #eee;">삼종</td>
+                <td style="padding:9px 14px;color:#666;border-bottom:1px solid #eee;"></td>
+              </tr>
+              <tr style="background:#f0ede4;">
+                <td style="padding:9px 14px;border-bottom:1px solid #eee;">동 현</td>
+                <td style="padding:9px 14px;color:#2d4a1e;font-weight:600;border-bottom:1px solid #eee;">승태</td>
+                <td style="padding:9px 14px;color:#666;border-bottom:1px solid #eee;"></td>
+              </tr>
+              <tr style="background:#fff;">
+                <td style="padding:9px 14px;border-bottom:1px solid #eee;">승 환</td>
+                <td style="padding:9px 14px;color:#2d4a1e;font-weight:600;border-bottom:1px solid #eee;">금주</td>
+                <td style="padding:9px 14px;color:#666;border-bottom:1px solid #eee;"></td>
+              </tr>
+              <tr style="background:#f0ede4;">
+                <td style="padding:9px 14px;border-bottom:1px solid #ddd5bc;">현 수</td>
+                <td style="padding:9px 14px;color:#2d4a1e;font-weight:600;border-bottom:1px solid #ddd5bc;">현필</td>
+                <td style="padding:9px 14px;color:#666;border-bottom:1px solid #ddd5bc;"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div style="margin-top:14px;font-size:.75rem;color:#8b6914;letter-spacing:.08em;text-align:center;">
+          ※ 세계도 원본은 위 사진을 참고하시기 바랍니다. 누락 정보는 총무 혁성 (010-9098-1481)에게 연락 바랍니다.
+        </div>
+      </div>
+
+    </div>
+    <div id="genealogyLock"><div class="lock-box"><div class="lock-icon">📖</div><div class="lock-title">회원 전용 콘텐츠</div><div class="lock-desc">족보는 종친 회원만 열람하실 수 있습니다.</div><div class="lock-btns"><button class="btn-lk-login" onclick="openModal('loginOverlay')">로그인</button><button class="btn-lk-join" onclick="openModal('joinOverlay')">회원가입</button></div></div></div>
+  </div>
+</section>
+
+<!-- 연락처 — 회원 전용 -->
+<section id="contact" style="background:var(--cream-dark);">
+  <div class="container">
+    <div id="contactContent" style="display:none;">
+      <div class="section-header"><span class="stag">Contact · 연락처</span><h2 class="stitle">종중 회원 연락처</h2><div class="sline"></div></div>
+      <div class="ctable-wrap">
+        <table class="ctable">
+          <thead><tr><th>성 명</th><th>전화(집)</th><th>휴대폰</th><th>이메일</th><th>비고</th></tr></thead>
+          <tbody>
+            <tr><td>현필 모친</td><td>—</td><td>010-8752-4021</td><td>—</td><td>밤9~10시</td></tr>
+            <tr><td>종국</td><td>055)688-5469</td><td>010-6656-5469</td><td><a href="/cdn-cgi/l/email-protection#462a2930232b2370747672730628273023346825292b"><span class="__cf_email__" data-cfemail="caa6a5bcafa7affcf8fafeff8aa4abbcafb8e4a9a5a7">[email&#160;protected]</span></a></td><td>밤9~10시</td></tr>
+            <tr><td>정원</td><td>051)261-7475</td><td>010-5311-7201</td><td>—</td><td></td></tr>
+            <tr><td>현필</td><td>—</td><td>010-3686-4021</td><td><a href="/cdn-cgi/l/email-protection#4e232f3c3d3e27220e202f382b3c602d2123"><span class="__cf_email__" data-cfemail="1479756667647d78547a756271663a777b79">[email&#160;protected]</span></a></td><td></td></tr>
+            <tr><td>우종</td><td>032)266-1289</td><td>010-7228-4604</td><td>—</td><td>1946.4.28(음)</td></tr>
+            <tr><td>승태</td><td>—</td><td>010-2981-1104</td><td><a href="/cdn-cgi/l/email-protection#e28d9196d5d6a28a838c8f838b8ecc8c8796"><span class="__cf_email__" data-cfemail="d0bfa3a4e7e490b8b1bebdb1b9bcfebeb5a4">[email&#160;protected]</span></a></td><td>1948.8.5(음)</td></tr>
+            <tr><td>길종</td><td>02)884-1747</td><td>010-5638-1747</td><td>—</td><td></td></tr>
+            <tr><td>선필순</td><td>02)884-1747</td><td>010-5851-1747</td><td>—</td><td></td></tr>
+            <tr><td>원준(경구)</td><td>—</td><td>010-9401-1747</td><td>—</td><td></td></tr>
+            <tr><td>금주</td><td>—</td><td>010-5663-1747</td><td><a href="/cdn-cgi/l/email-protection#36455d04070407765e57585b575f5a18585342"><span class="__cf_email__" data-cfemail="70031b424142413018111e1d11191c5e1e1504">[email&#160;protected]</span></a></td><td></td></tr>
+            <tr><td>삼종</td><td>02)419-6793</td><td>010-7120-9445</td><td><a href="/cdn-cgi/l/email-protection#dcb3afb6eee5e99cb4bdb2b1bdb5b0f2b2b9a8"><span class="__cf_email__" data-cfemail="08677b623a313d486069666569616426666d7c">[email&#160;protected]</span></a></td><td></td></tr>
+            <tr><td>영준</td><td>062)232-9194</td><td>010-6212-9194</td><td>—</td><td></td></tr>
+            <tr><td>영일</td><td>062)653-2276</td><td>016-778-7221</td><td><a href="/cdn-cgi/l/email-protection#93e0e1faa5a2a2d3fbf2fdfef2faffbdfdf6e7"><span class="__cf_email__" data-cfemail="582b2a316e6969183039363539313476363d2c">[email&#160;protected]</span></a></td><td></td></tr>
+            <tr><td>혁성</td><td>042)862-1481</td><td>010-9098-1481</td><td><a href="/cdn-cgi/l/email-protection#2a42594542121d131d6a444b5c4f5804494547"><span class="__cf_email__" data-cfemail="3d554e5255050a040a7d535c4b584f135e5250">[email&#160;protected]</span></a></td><td>Fax 042)861-1486</td></tr>
+            <tr><td>재인</td><td>061)282-8676</td><td>010-5661-8676</td><td><a href="/cdn-cgi/l/email-protection#483c3a27312529267a78787a082029262529212466262d3c"><span class="__cf_email__" data-cfemail="097d7b66706468673b39393b496168676468606527676c7d">[email&#160;protected]</span></a></td><td>1970.10.20(음)</td></tr>
+            <tr><td>종윤</td><td>—</td><td>010-9882-8266</td><td><a href="/cdn-cgi/l/email-protection#7b141343494d4d3b151a0f1e55181416"><span class="__cf_email__" data-cfemail="533c3b6b616565133d3227367d303c3e">[email&#160;protected]</span></a></td><td>Fax 062)231-9271</td></tr>
+            <tr><td>호진</td><td>—</td><td>010-9999-6113</td><td><a href="/cdn-cgi/l/email-protection#7a0b12080e161e4242423a141b0e1f54191517"><span class="__cf_email__" data-cfemail="a6d7ced4d2cac29e9e9ee6c8c7d2c388c5c9cb">[email&#160;protected]</span></a></td><td></td></tr>
+            <tr><td>진우</td><td>—</td><td>010-5003-7171</td><td>—</td><td></td></tr>
+            <tr><td>승옥</td><td>042)824-8522</td><td>010-8894-9507</td><td>—</td><td></td></tr>
+            <tr><td>경문</td><td>031)655-3834</td><td>010-2214-3834</td><td>—</td><td></td></tr>
+            <tr><td>관우</td><td>—</td><td>010-9194-5133</td><td>—</td><td></td></tr>
+            <tr><td>관영</td><td>—</td><td>010-8875-0008</td><td>—</td><td></td></tr>
+            <tr><td>관용</td><td>—</td><td>010-8654-6748</td><td>—</td><td></td></tr>
+            <tr><td>종수</td><td>—</td><td>010-4769-5510</td><td>—</td><td></td></tr>
+            <tr><td>이양</td><td>061)373-7730</td><td>—</td><td>—</td><td></td></tr>
+            <tr><td>안병선</td><td>061)723-3413</td><td>010-8622-3413</td><td><a href="/cdn-cgi/l/email-protection#e2838a8c8c8787a28a838c8f838b8ecc8c8796"><span class="__cf_email__" data-cfemail="15747d7b7b7070557d747b78747c793b7b7061">[email&#160;protected]</span></a></td><td></td></tr>
+            <tr><td>송수</td><td>—</td><td>—</td><td>—</td><td>032)744-4070</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="c-note">※ 연락처 변경 시 총무 혁성 010-9098-1481 에게 알려주세요.</div>
+    </div>
+    <div id="contactLock"><div class="lock-box"><div class="lock-icon">📞</div><div class="lock-title">회원 전용 콘텐츠</div><div class="lock-desc">개인정보 보호를 위해 종친 회원만 열람하실 수 있습니다.</div><div class="lock-btns"><button class="btn-lk-login" onclick="openModal('loginOverlay')">로그인</button><button class="btn-lk-join" onclick="openModal('joinOverlay')">회원가입</button></div></div></div>
+  </div>
+</section>
+
+<!-- 회칙 — 회원 전용 -->
+<section id="rules" style="background:var(--white);">
+  <div class="container">
+    <div id="rulesContent" style="display:none;">
+      <div class="section-header"><span class="stag">Rules · 회칙</span><h2 class="stitle">시중공파 18세손 이하 자손 모임 회칙</h2><div class="sline"></div></div>
+      <div class="rules-wrap">
+        <p style="text-align:center;font-size:.83rem;color:var(--stone);margin-bottom:28px;">2026년 3월 29일 최종 개정</p>
+        <div class="rule-art"><div class="rule-num">제1조</div><div class="rule-title">목적</div><div class="rule-body">시중공파 18세손 이하 자손 간의 친목 도모와 문중 전통의 계승, 공동 관심사의 협력을 목적으로 한다.</div></div>
+        <div class="rule-art"><div class="rule-num">제2조</div><div class="rule-title">회원 구분</div><div class="rule-body">① 정회원: 혼인한 자 또는 취업·사회에 진출한 자<br>② 준회원: 정회원에 해당하지 않는 모든 자</div></div>
+        <div class="rule-art"><div class="rule-num">제3조</div><div class="rule-title">회비</div><div class="rule-body">정회원 중 학생을 제외한 회원에 한하여 연간 6만원. 찬조금 자율 납부 가능.</div></div>
+        <div class="rule-art"><div class="rule-num">제4조</div><div class="rule-title">모임</div><div class="rule-body">정기 모임 연 1회. 시제 행사와 병행, 음력 10월 19일 이전 일요일 실시. 필요시 임시 모임 개최 가능.</div></div>
+        <div class="rule-art"><div class="rule-num">제5조</div><div class="rule-title">참석 의무</div><div class="rule-body">혈연을 기반으로 한 중요한 공동체로서, 회원은 정기 모임에 가능한 한 참석함을 원칙으로 한다.</div></div>
+        <div class="rule-art"><div class="rule-num">제6조</div><div class="rule-title">재정 사용</div><div class="rule-body">벌초·제례 경비, 장비·물품 구입, 문중 주요 행사(비석 건립, 묘지 이장 등), 회의 승인 사항에 사용.</div></div>
+        <div class="rule-art"><div class="rule-num">제7조</div><div class="rule-title">참석 대상</div><div class="rule-body">정회원 및 준회원 전원.</div></div>
+        <div class="rule-art"><div class="rule-num">제8조</div><div class="rule-title">임원</div><div class="rule-body">고문: 우종 ｜ 회장: 종윤 ｜ 부회장: 종국·삼종 ｜ 총무/간사: 혁성</div></div>
+        <div class="rules-amend"><h4>📜 부칙 — 개정 이력</h4><p>1997.11.17 최초 → 1998.09.13 → 2004.11.21 → 2005.04.03 → 2013.11.17 → <strong>2026.03.29 최종 개정</strong></p></div>
+      </div>
+    </div>
+    <div id="rulesLock"><div class="lock-box"><div class="lock-icon">📜</div><div class="lock-title">회원 전용 콘텐츠</div><div class="lock-desc">회칙 전문은 종친 회원만 열람하실 수 있습니다.</div><div class="lock-btns"><button class="btn-lk-login" onclick="openModal('loginOverlay')">로그인</button><button class="btn-lk-join" onclick="openModal('joinOverlay')">회원가입</button></div></div></div>
+  </div>
+</section>
+
+<!-- 사진첩 — 회원 전용 -->
+<section id="gallery" style="background:var(--cream-dark);">
+  <div class="container">
+    <div id="galleryContent" style="display:none;">
+      <div class="section-header"><span class="stag">Photo · 사진첩</span><h2 class="stitle">문중 사진첩</h2><div class="sline"></div></div>
+      <div class="gal-ctrl">
+        <span style="font-size:.83rem;color:var(--stone);">사진 <span id="photoCount">0</span>장</span>
+        <button class="btn-upload" onclick="document.getElementById('photoInput').click()">📷 사진 올리기</button>
+        <input type="file" id="photoInput" accept="image/*" multiple style="display:none;" onchange="uploadPhotos(this)">
+      </div>
+      <div class="gal-grid" id="galleryGrid">
+        <div class="gal-empty"><div class="ge-icon">📷</div><p>첫 번째 사진을 올려주세요</p></div>
+      </div>
+    </div>
+    <div id="galleryLock"><div class="lock-box"><div class="lock-icon">📷</div><div class="lock-title">회원 전용 콘텐츠</div><div class="lock-desc">사진첩은 종친 회원만 이용하실 수 있습니다.</div><div class="lock-btns"><button class="btn-lk-login" onclick="openModal('loginOverlay')">로그인</button><button class="btn-lk-join" onclick="openModal('joinOverlay')">회원가입</button></div></div></div>
+  </div>
+</section>
+
+<!-- 게시판 -->
+<section id="board" style="background:var(--cream);">
+  <div class="container">
+    <div class="section-header"><span class="stag">Board · 게시판</span><h2 class="stitle">문중 게시판</h2><div class="sline"></div></div>
+    <div class="board-ctrl">
+      <span style="font-size:.83rem;color:var(--stone);">게시글 <span id="postCount">0</span>건</span>
+      <button class="btn-write" id="writeBtn" style="display:none;" onclick="openModal('writeOverlay')">✏️ 글 쓰기</button>
+      <button class="btn-write" id="writeBtnGuest" onclick="openModal('loginOverlay')">✏️ 로그인 후 글쓰기</button>
+    </div>
+    <table class="btable">
+      <thead><tr><th style="width:50px">번호</th><th>제목</th><th style="width:80px">작성자</th><th style="width:90px">날짜</th><th style="width:50px">삭제</th></tr></thead>
+      <tbody id="boardBody"><tr><td colspan="5" class="bempty">첫 번째 글을 남겨주세요</td></tr></tbody>
+    </table>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">吳 · 해주오씨 시중공파</div>
+  <div class="footer-sub">18세손 재급이하 합동제단 · 전라남도 보성</div>
+  <div class="footer-div"></div>
+  <div class="footer-info">
+    총무/간사: 혁성 · 010-9098-1481 · <a href="/cdn-cgi/l/email-protection#b9d1cad6d1818e808ef9d7d8cfdccb97dad6d4"><span class="__cf_email__" data-cfemail="0c647f6364343b353b4c626d7a697e226f6361">[email&#160;protected]</span></a><br>
+    회장: 종윤 · 010-9882-8266<br>
+    © 2026 해주오씨 시중공파 종친회
+  </div>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+let currentUser = null;
+let posts = [];
+let photos = JSON.parse(localStorage.getItem('mj_photos') || '[]');
+
+// ── 모달 ──
+function openModal(id){ document.getElementById(id).classList.add('active'); }
+function closeModal(id){ document.getElementById(id).classList.remove('active'); clearAlerts(); }
+function switchModal(a,b){ closeModal(a); openModal(b); }
+function clearAlerts(){ document.querySelectorAll('.alert').forEach(function(e){ e.classList.remove('show'); }); }
+function showAlert(id,msg){ var e=document.getElementById(id); if(e){ e.textContent=msg; e.classList.add('show'); } }
+
+document.addEventListener('keydown', function(e){ if(e.key==='Escape') document.querySelectorAll('.overlay.active').forEach(function(o){ o.classList.remove('active'); }); });
+document.querySelectorAll('.overlay').forEach(function(o){ o.addEventListener('click', function(e){ if(e.target===o) o.classList.remove('active'); }); });
+
+// ── 회원 데이터 ──
+function getUsers(){ return JSON.parse(localStorage.getItem('mj_users') || '[]'); }
+function saveUsers(u){ localStorage.setItem('mj_users', JSON.stringify(u)); }
+
+// ── 로그인 ──
+function doLogin(){
+  var name = document.getElementById('loginName').value.trim();
+  var phone = document.getElementById('loginPhone').value.trim().replace(/-/g,'');
+  if(!name || !phone){ showAlert('loginError','성함과 휴대폰 번호를 입력해주세요.'); return; }
+  var users = getUsers();
+  var u = users.find(function(u){ return u.name===name && u.phone.replace(/-/g,'')===phone; });
+  if(!u){ showAlert('loginError','등록된 회원 정보가 없습니다. 회원가입을 먼저 해주세요.'); return; }
+  currentUser = u;
+  localStorage.setItem('mj_session', JSON.stringify(u));
+  closeModal('loginOverlay');
+  updateAuthUI();
+  unlockMember();
+}
+
+// ── 회원가입 ──
+function doJoin(){
+  var name = document.getElementById('joinName').value.trim();
+  var phone = document.getElementById('joinPhone').value.trim();
+  var type = document.getElementById('joinType').value || '준회원';
+  var genEl = document.getElementById('joinGen');
+  var gen = genEl ? genEl.value.trim() : '';
+  if(!name){ showAlert('joinError','성함을 입력해주세요.'); return; }
+  if(!phone || phone.replace(/-/g,'').length < 10){ showAlert('joinError','올바른 휴대폰 번호를 입력해주세요.'); return; }
+  var users = getUsers();
+  var dup = users.find(function(u){ return u.name===name && u.phone.replace(/-/g,'')===phone.replace(/-/g,''); });
+  if(dup){ showAlert('joinError','이미 등록된 회원입니다. 로그인해 주세요.'); return; }
+  var newUser = {
+    id: 'user_' + Date.now(),
+    name: name,
+    phone: phone,
+    type: type,
+    gen: gen,
+    joinDate: new Date().toLocaleDateString('ko-KR')
+  };
+  users.push(newUser);
+  saveUsers(users);
+  currentUser = newUser;
+  localStorage.setItem('mj_session', JSON.stringify(newUser));
+  closeModal('joinOverlay');
+  updateAuthUI();
+  unlockMember();
+  setTimeout(function(){ alert('✅ ' + name + '님, 가입을 환영합니다!\n이제 모든 회원 전용 메뉴를 이용하실 수 있습니다.'); }, 300);
+}
+
+// ── 로그아웃 ──
+function doLogout(){
+  currentUser = null;
+  localStorage.removeItem('mj_session');
+  updateAuthUI();
+  lockMember();
+}
+
+// ── 세션 확인 ──
+function checkSession(){
+  var s = localStorage.getItem('mj_session');
+  if(s){ currentUser = JSON.parse(s); updateAuthUI(); unlockMember(); }
+}
+
+// ── UI 업데이트 ──
+function updateAuthUI(){
+  var ga  = document.getElementById('guestAct');
+  var ui  = document.getElementById('userInfo');
+  var ug  = document.getElementById('userGreet');
+  var wb  = document.getElementById('writeBtn');
+  var wbg = document.getElementById('writeBtnGuest');
+  if(currentUser){
+    if(ga)  ga.style.display  = 'none';
+    if(ui)  { ui.style.display = 'flex'; ui.classList.add('active'); }
+    if(ug)  ug.textContent = currentUser.name + ' ' + (currentUser.type||'회원') + '님';
+    if(wb)  wb.style.display  = 'block';
+    if(wbg) wbg.style.display = 'none';
+  } else {
+    if(ga)  ga.style.display  = 'flex';
+    if(ui)  { ui.style.display = 'none'; ui.classList.remove('active'); }
+    if(ug)  ug.textContent = '';
+    if(wb)  wb.style.display  = 'none';
+    if(wbg) wbg.style.display = 'block';
+  }
+}
+
+// ── 회원 전용 잠금/해제 ──
+var mSec = ['tomb','finance','genealogy','contact','rules','gallery'];
+function unlockMember(){
+  mSec.forEach(function(id){
+    var l = document.getElementById(id+'Lock');
+    var ct = document.getElementById(id+'Content');
+    if(l) l.style.display='none';
+    if(ct) ct.style.display='block';
+  });
+}
+function lockMember(){
+  mSec.forEach(function(id){
+    var l = document.getElementById(id+'Lock');
+    var ct = document.getElementById(id+'Content');
+    if(l) l.style.display='block';
+    if(ct) ct.style.display='none';
+  });
+}
+
+// ── 사진첩 ──
+function savePhotos(){ localStorage.setItem('mj_photos', JSON.stringify(photos)); }
+
+function loadPhotos(){
+  photos = JSON.parse(localStorage.getItem('mj_photos') || '[]');
+  renderPhotos();
+}
+
+function renderPhotos(){
+  var grid = document.getElementById('galleryGrid');
+  var cnt = document.getElementById('photoCount');
+  if(!grid) return;
+  if(cnt) cnt.textContent = photos.length;
+  if(!photos.length){
+    grid.innerHTML = '<div class="gal-empty"><div class="ge-icon">📷</div><p>첫 번째 사진을 올려주세요</p></div>';
+    return;
+  }
+  grid.innerHTML = photos.map(function(p,i){
+    return '<div class="gal-item" style="position:relative;background:#fff;border:1px solid #ddd5bc;border-radius:6px;overflow:hidden;">' +
+      '<img src="' + p.url + '" alt="' + (p.caption||'') + '" onclick="openLightbox(' + i + ')" style="width:100%;height:180px;object-fit:cover;cursor:pointer;display:block;">' +
+      '<div style="padding:8px 10px;font-size:.78rem;color:#666;">' + (p.caption||'') + '</div>' +
+      '<button onclick="deletePhoto(' + i + ')" style="position:absolute;top:6px;right:6px;background:rgba(0,0,0,.55);color:#fff;border:none;border-radius:50%;width:26px;height:26px;cursor:pointer;font-size:.8rem;line-height:1;">✕</button>' +
+    '</div>';
+  }).join('');
+}
+
+function uploadPhotos(input){
+  var files = Array.from(input.files);
+  if(!files.length) return;
+  var btn = document.querySelector('.btn-upload');
+  if(btn){ btn.textContent='⏳ 업로드 중...'; btn.disabled=true; }
+  var done = 0;
+  files.forEach(function(file){
+    var reader = new FileReader();
+    reader.onload = function(e){
+      var img = new Image();
+      img.onload = function(){
+        var canvas = document.createElement('canvas');
+        var w = img.width, h = img.height, MAX = 900;
+        if(w>MAX){ h=Math.round(h*MAX/w); w=MAX; }
+        if(h>MAX){ w=Math.round(w*MAX/h); h=MAX; }
+        canvas.width=w; canvas.height=h;
+        canvas.getContext('2d').drawImage(img,0,0,w,h);
+        var url = canvas.toDataURL('image/jpeg', 0.8);
+        photos.unshift({ url:url, caption:file.name.replace(/\.[^.]+$/,''), date:new Date().toLocaleDateString('ko-KR') });
+        done++;
+        if(done===files.length){
+          savePhotos(); renderPhotos();
+          if(btn){ btn.textContent='📷 사진 올리기'; btn.disabled=false; }
+          input.value='';
+        }
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+function deletePhoto(i){
+  if(!confirm('이 사진을 삭제하시겠습니까?')) return;
+  photos.splice(i,1); savePhotos(); renderPhotos();
+}
+
+function openLightbox(i){
+  var p = photos[i]; if(!p) return;
+  var lb = document.createElement('div');
+  lb.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.93);z-index:9999;display:flex;align-items:center;justify-content:center;flex-direction:column;';
+  lb.innerHTML = '<button onclick="this.parentNode.remove()" style="position:absolute;top:18px;right:22px;background:none;border:none;color:#fff;font-size:2rem;cursor:pointer;line-height:1;">✕</button>' +
+    '<img src="' + p.url + '" style="max-width:93vw;max-height:83vh;object-fit:contain;border-radius:4px;">' +
+    '<div style="color:#ccc;margin-top:12px;font-size:.85rem;">' + (p.caption||'') + '</div>';
+  lb.addEventListener('click', function(e){ if(e.target===lb) lb.remove(); });
+  document.body.appendChild(lb);
+}
+
+// ── 게시판 ──
+function loadPosts(){ posts=JSON.parse(localStorage.getItem('mj_posts')||'[]'); renderBoard(); }
+function savePosts(){ localStorage.setItem('mj_posts',JSON.stringify(posts)); }
+function renderBoard(){
+  var tb = document.getElementById('boardBody');
+  document.getElementById('postCount').textContent = posts.length;
+  if(!posts.length){ tb.innerHTML='<tr><td colspan="5" class="bempty">첫 번째 글을 남겨주세요</td></tr>'; return; }
+  tb.innerHTML = posts.slice().reverse().map(function(p,i){
+    return '<tr><td>'+(posts.length-i)+'</td><td class="ptitle">'+p.title+'</td><td>'+p.author+'</td><td>'+p.date+'</td><td><button onclick="delPost('+(posts.length-1-i)+')" style="background:none;border:1px solid #ddd;padding:2px 7px;cursor:pointer;font-size:.72rem;color:#999;border-radius:3px;">삭제</button></td></tr>';
+  }).join('');
+}
+function submitPost(){
+  var title=document.getElementById('postTitle').value.trim();
+  var content=document.getElementById('postContent').value.trim();
+  var pw=document.getElementById('postPw').value;
+  if(!title||!content||!pw){ alert('제목, 내용, 비밀번호를 입력해주세요.'); return; }
+  posts.push({ title:title, content:content, pw:pw, author:currentUser?currentUser.name:'익명', date:new Date().toLocaleDateString('ko-KR') });
+  savePosts(); renderBoard(); closeModal('writeOverlay');
+  document.getElementById('postTitle').value='';
+  document.getElementById('postContent').value='';
+  document.getElementById('postPw').value='';
+}
+function delPost(i){
+  var pw=prompt('비밀번호를 입력하세요');
+  if(pw===null) return;
+  if(posts[i].pw===pw){ posts.splice(i,1); savePosts(); renderBoard(); }
+  else alert('비밀번호가 틀렸습니다.');
+}
+
+// ── 카카오 공유 ──
+function kakaoShare(){
+  var url = window.location.href;
+  try {
+    if(typeof Kakao!=='undefined'){
+      if(!Kakao.isInitialized()) Kakao.init('d5900dd1381a552e860205fd3e62dae4');
+      Kakao.Share.sendDefault({
+        objectType:'feed',
+        content:{ title:'해주오씨 시중공파 문중 홈페이지', description:'18세손 재급이하 합동제단 · 전라남도 보성', imageUrl:'https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=800', link:{ mobileWebUrl:url, webUrl:url } },
+        buttons:[{ title:'홈페이지 보기', link:{ mobileWebUrl:url, webUrl:url } }]
+      });
+    } else { copyLink(); }
+  } catch(e){ copyLink(); }
+}
+function copyLink(){
+  var url = window.location.href;
+  if(navigator.clipboard){ navigator.clipboard.writeText(url).then(functi
