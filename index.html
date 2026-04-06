@@ -210,7 +210,7 @@ footer{background:linear-gradient(160deg,#040c05,#0b1a0d);border-top:2px solid v
 .adm-table td{padding:8px 10px;border-bottom:1px solid #1a3a22;color:#d1d5db;vertical-align:middle;}
 .adm-table input{width:100%;background:#111827;border:1px solid #374151;border-radius:3px;padding:5px 8px;color:#f3f4f6;font-size:.8rem;}
 .adm-badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:.7rem;font-weight:700;}
-.badge-member{background:#065f46;color:#6ee7b7;}
+.badge-member{background:#065f46;color:#6ee7b7;}.badge-pending{background:#78350f;color:#fcd34d;}.badge-rejected{background:#7f1d1d;color:#fca5a5;}
 .adm-toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background:#065f46;color:#6ee7b7;padding:12px 28px;border-radius:8px;font-size:.88rem;z-index:9999;display:none;border:1px solid #059669;}
 .adm-toast.show{display:block;}
 </style>
@@ -273,8 +273,8 @@ footer{background:linear-gradient(160deg,#040c05,#0b1a0d);border-top:2px solid v
         <div class="adm-sec"><h3>등록된 사진 (<span id="adm-photo-cnt">0</span>장)</h3><div id="adm-photo-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:10px;margin-top:10px;"></div></div>
       </div>
       <div class="adm-panel" id="p-members">
-        <div class="adm-panel-title">🗂️ 회원 관리</div>
-        <div class="adm-sec"><h3>가입 회원 (<span id="adm-member-cnt">0</span>명)</h3><div style="overflow-x:auto;"><table class="adm-table" style="min-width:580px;"><thead><tr><th>이름</th><th>휴대폰</th><th>구분</th><th>가입일</th><th>등급</th><th>삭제</th></tr></thead><tbody id="members-tbody"></tbody></table></div></div>
+        <div class="adm-panel-title">🗂️ 회원 승인 관리</div>
+        <div class="adm-sec"><h3>가입 신청 / 승인 관리 (<span id="adm-member-cnt">0</span>건)</h3><div style="overflow-x:auto;"><table class="adm-table" style="min-width:860px;"><thead><tr><th>이름</th><th>휴대폰</th><th>구분</th><th>항렬/관계</th><th>가입일</th><th>상태</th><th>승인</th><th>삭제</th></tr></thead><tbody id="members-tbody"></tbody></table></div></div>
       </div>
       <div class="adm-panel" id="p-board">
         <div class="adm-panel-title">📋 게시판 관리</div>
@@ -508,10 +508,10 @@ footer{background:linear-gradient(160deg,#040c05,#0b1a0d);border-top:2px solid v
   <div class="modal-box">
     <button class="modal-close" id="close-login">✕</button>
     <div class="modal-title">🔐 로그인</div>
-    <div class="modal-sub">성함과 휴대폰 번호로 로그인</div>
+    <div class="modal-sub">휴대폰 번호 + 비밀번호로 로그인 (관리자 승인 후 가능)</div>
     <div class="msg msg-err" id="login-err"></div>
-    <div class="form-g"><label>성함</label><input type="text" id="login-name" placeholder="예) 종윤"></div>
     <div class="form-g"><label>휴대폰 번호</label><input type="tel" id="login-phone" placeholder="010-0000-0000"></div>
+    <div class="form-g"><label>비밀번호</label><input type="password" id="login-pw" placeholder="비밀번호"></div>
     <button class="btn-ok" id="btn-do-login">로그인</button>
     <div class="modal-switch">처음 오셨나요? <button id="sw-join">회원가입</button></div>
   </div>
@@ -521,13 +521,15 @@ footer{background:linear-gradient(160deg,#040c05,#0b1a0d);border-top:2px solid v
   <div class="modal-box">
     <button class="modal-close" id="close-join">✕</button>
     <div class="modal-title">📝 회원가입</div>
-    <div class="modal-sub">성함 + 휴대폰 번호만으로 간편 가입!</div>
+    <div class="modal-sub">현재 디자인은 그대로 유지되고, 가입 후 관리자 승인을 받아야 로그인 가능합니다.</div>
     <div class="msg msg-err" id="join-err"></div>
+    <div class="msg msg-ok" id="join-ok"></div>
     <div class="form-g"><label>성함 *</label><input type="text" id="join-name" placeholder="예) 종윤"></div>
     <div class="form-g"><label>휴대폰 번호 *</label><input type="tel" id="join-phone" placeholder="010-0000-0000"></div>
+    <div class="form-g"><label>비밀번호 *</label><input type="password" id="join-pw" placeholder="비밀번호 4자 이상"></div>
     <div class="form-g"><label>회원 구분</label><select id="join-type"><option value="준회원">준회원</option><option value="정회원">정회원</option></select></div>
     <div class="form-g"><label>항렬/관계 (선택)</label><input type="text" id="join-gen" placeholder="예) 19세손"></div>
-    <button class="btn-ok" id="btn-do-join">가입하기</button>
+    <button class="btn-ok" id="btn-do-join">가입 신청</button>
     <div class="modal-switch">이미 가입하셨나요? <button id="sw-login">로그인</button></div>
   </div>
 </div>
@@ -604,28 +606,40 @@ function renderBoard(){var posts=ld('mj_posts',[]);var tb=document.getElementByI
 var CU=null;
 function getUsers(){return ld('mj_users',[]);}
 function saveUsers(u){sv('mj_users',u);}
+function normPhone(v){return (v||'').replace(/[^0-9]/g,'');}
 document.getElementById('btn-do-login').addEventListener('click',function(){
   clearMsg('login-err');
-  var name=document.getElementById('login-name').value.trim(),phone=document.getElementById('login-phone').value.trim().replace(/-/g,'');
-  if(!name||!phone){showMsg('login-err','성함과 휴대폰 번호를 입력해주세요.');return;}
-  var u=getUsers().find(function(u){return u.name===name&&u.phone.replace(/-/g,'')===phone;});
-  if(!u){showMsg('login-err','등록된 회원 정보가 없습니다.');return;}
+  var phone=normPhone(document.getElementById('login-phone').value.trim());
+  var pw=document.getElementById('login-pw').value.trim();
+  if(!phone||!pw){showMsg('login-err','휴대폰 번호와 비밀번호를 입력해주세요.');return;}
+  var u=getUsers().find(function(u){return normPhone(u.phone)===phone && (u.pw||'')===pw;});
+  if(!u){showMsg('login-err','휴대폰 번호 또는 비밀번호가 올바르지 않습니다.');return;}
+  if(u.status!=='approved'){showMsg('login-err','관리자 승인 후 로그인 가능합니다.');return;}
   setUser(u);closeM('modal-login');
 });
 document.getElementById('btn-do-join').addEventListener('click',function(){
-  clearMsg('join-err');
-  var name=document.getElementById('join-name').value.trim(),phone=document.getElementById('join-phone').value.trim(),type=document.getElementById('join-type').value,gen=document.getElementById('join-gen').value.trim();
+  clearMsg('join-err'); clearMsg('join-ok');
+  var name=document.getElementById('join-name').value.trim(),
+      phone=document.getElementById('join-phone').value.trim(),
+      pw=document.getElementById('join-pw').value.trim(),
+      type=document.getElementById('join-type').value,
+      gen=document.getElementById('join-gen').value.trim();
   if(!name){showMsg('join-err','성함을 입력해주세요.');return;}
-  if(!phone||phone.replace(/-/g,'').length<10){showMsg('join-err','올바른 휴대폰 번호를 입력해주세요.');return;}
+  if(normPhone(phone).length<10){showMsg('join-err','올바른 휴대폰 번호를 입력해주세요.');return;}
+  if(pw.length<4){showMsg('join-err','비밀번호는 4자 이상 입력해주세요.');return;}
   var users=getUsers();
-  if(users.find(function(u){return u.name===name&&u.phone.replace(/-/g,'')===phone.replace(/-/g,'');})){showMsg('join-err','이미 등록된 회원입니다.');return;}
-  var newU={id:'u_'+Date.now(),name:name,phone:phone,type:type,gen:gen,joinDate:new Date().toLocaleDateString('ko-KR')};
-  users.push(newU);saveUsers(users);setUser(newU);closeM('modal-join');
-  setTimeout(function(){alert('✅ '+name+'님, 가입을 환영합니다!');},200);
+  if(users.find(function(u){return normPhone(u.phone)===normPhone(phone);})){showMsg('join-err','이미 등록된 휴대폰 번호입니다.');return;}
+  var newU={id:'u_'+Date.now(),name:name,phone:phone,pw:pw,type:type,gen:gen,joinDate:new Date().toLocaleDateString('ko-KR'),status:'pending'};
+  users.push(newU);saveUsers(users);loadMbrP();
+  showMsg('join-ok','가입 신청이 완료되었습니다. 관리자 승인 후 로그인 가능합니다.','ok');
+  document.getElementById('join-name').value='';
+  document.getElementById('join-phone').value='';
+  document.getElementById('join-pw').value='';
+  document.getElementById('join-gen').value='';
 });
 function doLogout(){CU=null;sv('mj_session',null);updateUI();lockAll();}
 function setUser(u){CU=u;sv('mj_session',u);updateUI();unlockAll();}
-function checkSession(){var s=ld('mj_session',null);if(s&&s.name){CU=s;updateUI();unlockAll();}}
+function checkSession(){var s=ld('mj_session',null);if(s&&s.name&&s.status==='approved'){CU=s;updateUI();unlockAll();}}
 function updateUI(){var gb=document.getElementById('guest-btns'),ub=document.getElementById('user-bar'),un=document.getElementById('user-name'),wm=document.getElementById('btn-write-m'),wg=document.getElementById('btn-write-g');if(CU){gb.style.display='none';ub.classList.add('show');un.textContent=CU.name+' '+CU.type+'님';wm.style.display='inline-block';wg.style.display='none';}else{gb.style.display='flex';ub.classList.remove('show');wm.style.display='none';wg.style.display='inline-block';}}
 var SECS=['tomb','finance','genealogy','contact','rules','gallery'];
 function unlockAll(){SECS.forEach(function(id){document.getElementById(id+'-content').style.display='block';document.getElementById(id+'-lock').style.display='none';});}
@@ -704,7 +718,52 @@ document.getElementById('add-fin-row').addEventListener('click',function(){var f
 document.getElementById('save-finance').addEventListener('click',function(){var fin=ld('mj_finance',DEF.finance);var lbls=document.querySelectorAll('.fc-lbl'),amts=document.querySelectorAll('.fc-amt'),subs=document.querySelectorAll('.fc-sub'),hls=document.querySelectorAll('.fc-hl');fin.cards=Array.from(lbls).map(function(el,i){return{label:el.value,amt:amts[i].value,sub:subs[i].value,hl:hls[i].value==='true'};});var rows=document.querySelectorAll('#fin-tbody tr');fin.rows=Array.from(rows).map(function(r){var inp=r.querySelectorAll('input');return{item:inp[0].value,amt:inp[1].value,status:inp[2].value,ok:inp[2].value.indexOf('완료')>-1};});sv('mj_finance',fin);renderFinance();toast('재정 정보 저장!');});
 function loadGalP(){var photos=ld('mj_photos',[]);var cnt=document.getElementById('adm-photo-cnt');if(cnt)cnt.textContent=photos.length;var g=document.getElementById('adm-photo-grid');if(!g)return;g.innerHTML=photos.length?photos.map(function(p,i){return '<div style="position:relative;aspect-ratio:1;border-radius:4px;overflow:hidden;"><img src="'+p.url+'" style="width:100%;height:100%;object-fit:cover;"><button class="adm-del-ph" data-i="'+i+'" style="position:absolute;top:4px;right:4px;background:rgba(0,0,0,.7);color:#fff;border:none;border-radius:50%;width:22px;height:22px;cursor:pointer;font-size:.72rem;">✕</button><div style="position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,.65);color:#fff;font-size:.63rem;padding:3px 5px;">'+(p.cap||'')+'</div></div>';}).join(''):'<div style="color:#666;padding:20px;">사진 없음</div>';document.querySelectorAll('.adm-del-ph').forEach(function(btn){btn.addEventListener('click',function(){if(!confirm('삭제?'))return;var ph=ld('mj_photos',[]);ph.splice(parseInt(btn.dataset.i),1);sv('mj_photos',ph);renderPhotos();loadGalP();});});}
 document.getElementById('adm-upload-btn').addEventListener('click',function(){var input=document.getElementById('adm-photo-input');var files=Array.from(input.files);if(!files.length){alert('사진을 선택해주세요.');return;}var done=0,photos=ld('mj_photos',[]);files.forEach(function(file){var r=new FileReader();r.onload=function(e){var img=new Image();img.onload=function(){var c=document.createElement('canvas'),MAX=900,w=img.width,h=img.height;if(w>MAX){h=Math.round(h*MAX/w);w=MAX;}if(h>MAX){w=Math.round(w*MAX/h);h=MAX;}c.width=w;c.height=h;c.getContext('2d').drawImage(img,0,0,w,h);photos.unshift({url:c.toDataURL('image/jpeg',.8),cap:file.name.replace(/\.[^.]+$/,''),date:new Date().toLocaleDateString('ko-KR')});done++;if(done===files.length){sv('mj_photos',photos);renderPhotos();loadGalP();input.value='';toast('업로드 완료!');}};img.src=e.target.result;};r.readAsDataURL(file);});});
-function loadMbrP(){var users=getUsers();var cnt=document.getElementById('adm-member-cnt');if(cnt)cnt.textContent=users.length;document.getElementById('members-tbody').innerHTML=users.length?users.map(function(u,i){return '<tr><td>'+u.name+'</td><td>'+u.phone+'</td><td>'+u.type+'</td><td>'+u.joinDate+'</td><td><span class="adm-badge badge-member">회원</span></td><td><button class="btn-danger del-mbr" data-i="'+i+'">삭제</button></td></tr>';}).join(''):'<tr><td colspan="6" style="text-align:center;padding:20px;color:#666;">가입 회원 없음</td></tr>';document.querySelectorAll('.del-mbr').forEach(function(btn){btn.addEventListener('click',function(){if(!confirm('삭제?'))return;var u=getUsers();u.splice(parseInt(btn.dataset.i),1);saveUsers(u);loadMbrP();toast('삭제 완료.');});});}
+function loadMbrP(){
+  var users=getUsers();
+  var cnt=document.getElementById('adm-member-cnt');
+  if(cnt)cnt.textContent=users.length;
+  var tbody=document.getElementById('members-tbody');
+  if(!users.length){
+    tbody.innerHTML='<tr><td colspan="8" style="text-align:center;padding:20px;color:#666;">가입 신청 없음</td></tr>';
+    return;
+  }
+  tbody.innerHTML=users.map(function(u,i){
+    var state=u.status||'pending';
+    var badgeClass=state==='approved'?'badge-member':(state==='rejected'?'badge-rejected':'badge-pending');
+    var stateText=state==='approved'?'승인됨':(state==='rejected'?'반려':'대기');
+    return '<tr>'
+      +'<td>'+u.name+'</td>'
+      +'<td>'+u.phone+'</td>'
+      +'<td>'+u.type+'</td>'
+      +'<td>'+(u.gen||'-')+'</td>'
+      +'<td>'+u.joinDate+'</td>'
+      +'<td><span class="adm-badge '+badgeClass+'">'+stateText+'</span></td>'
+      +'<td>'
+      +'<button class="btn-save app-mbr" data-i="'+i+'" style="padding:6px 10px;font-size:.78rem;margin-right:6px;">승인</button>'
+      +'<button class="btn-add rej-mbr" data-i="'+i+'" style="padding:6px 10px;font-size:.78rem;margin-bottom:0;">반려</button>'
+      +'</td>'
+      +'<td><button class="btn-danger del-mbr" data-i="'+i+'">삭제</button></td>'
+      +'</tr>';
+  }).join('');
+  document.querySelectorAll('.app-mbr').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      var users=getUsers(), idx=parseInt(btn.dataset.i);
+      users[idx].status='approved'; saveUsers(users); loadMbrP(); toast('승인 완료.');
+    });
+  });
+  document.querySelectorAll('.rej-mbr').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      var users=getUsers(), idx=parseInt(btn.dataset.i);
+      users[idx].status='rejected'; saveUsers(users); loadMbrP(); toast('반려 완료.');
+    });
+  });
+  document.querySelectorAll('.del-mbr').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      if(!confirm('삭제?'))return;
+      var u=getUsers();u.splice(parseInt(btn.dataset.i),1);saveUsers(u);loadMbrP();toast('삭제 완료.');
+    });
+  });
+}
 function loadBrdP(){var posts=ld('mj_posts',[]);var cnt=document.getElementById('adm-post-cnt');if(cnt)cnt.textContent=posts.length;document.getElementById('adm-board-tbody').innerHTML=posts.length?posts.slice().reverse().map(function(p,i){var ri=posts.length-1-i;return '<tr><td>'+(posts.length-i)+'</td><td>'+p.title+'</td><td>'+p.author+'</td><td>'+p.date+'</td><td><button class="btn-danger del-brd" data-i="'+ri+'">삭제</button></td></tr>';}).join(''):'<tr><td colspan="5" style="text-align:center;padding:20px;color:#666;">게시글 없음</td></tr>';document.querySelectorAll('.del-brd').forEach(function(btn){btn.addEventListener('click',function(){if(!confirm('삭제?'))return;var posts=ld('mj_posts',[]);posts.splice(parseInt(btn.dataset.i),1);sv('mj_posts',posts);renderBoard();loadBrdP();toast('삭제.');});});}
 document.getElementById('save-pw').addEventListener('click',function(){var cur=document.getElementById('pw-cur').value,nw=document.getElementById('pw-new').value,cf=document.getElementById('pw-cf').value,correct=ld('mj_admin_pw',DEF.adminPw);if(cur!==correct){showMsg('pw-err','현재 비밀번호가 틀렸습니다.');return;}if(nw.length<4){showMsg('pw-err','4자 이상 입력해주세요.');return;}if(nw!==cf){showMsg('pw-err','비밀번호가 일치하지 않습니다.');return;}sv('mj_admin_pw',nw);clearMsg('pw-err');document.getElementById('pw-cur').value='';document.getElementById('pw-new').value='';document.getElementById('pw-cf').value='';toast('비밀번호 변경 완료!');});
 
