@@ -213,6 +213,88 @@ footer{background:linear-gradient(160deg,#040c05,#0b1a0d);border-top:2px solid v
 .badge-member{background:#065f46;color:#6ee7b7;}.badge-pending{background:#78350f;color:#fcd34d;}.badge-rejected{background:#7f1d1d;color:#fca5a5;}
 .adm-toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background:#065f46;color:#6ee7b7;padding:12px 28px;border-radius:8px;font-size:.88rem;z-index:9999;display:none;border:1px solid #059669;}
 .adm-toast.show{display:block;}
+
+/* ══════════════════════════════════
+   📱 모바일 전용 햄버거 메뉴
+══════════════════════════════════ */
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:6px;background:none;border:none;}
+.hamburger span{display:block;width:22px;height:2px;background:var(--gold);border-radius:2px;transition:.3s;}
+.hamburger.open span:nth-child(1){transform:rotate(45deg) translate(5px,5px);}
+.hamburger.open span:nth-child(2){opacity:0;}
+.hamburger.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px);}
+
+/* 모바일 드롭다운 메뉴 */
+.mobile-menu{display:none;position:fixed;top:62px;left:0;right:0;background:rgba(6,16,8,.98);z-index:700;border-bottom:2px solid var(--gold);padding:8px 0;max-height:calc(100vh - 62px);overflow-y:auto;}
+.mobile-menu.show{display:block;}
+.mobile-menu a{display:flex;align-items:center;justify-content:space-between;padding:13px 20px;font-size:.9rem;color:#ccc;border-bottom:1px solid rgba(201,168,76,.1);text-decoration:none;}
+.mobile-menu a:active{background:rgba(201,168,76,.1);}
+.mobile-menu .mm-auth{padding:12px 16px;display:flex;gap:8px;border-bottom:1px solid rgba(201,168,76,.15);}
+.mobile-menu .mm-auth button{flex:1;padding:10px;font-size:.85rem;border-radius:4px;font-weight:700;}
+
+/* ══════════════════════════════════
+   📱 관리자 패널 모바일 대응
+══════════════════════════════════ */
+.adm-mob-nav{display:none;background:#0a1a0e;border-bottom:2px solid var(--gold);padding:0 12px;overflow-x:auto;white-space:nowrap;flex-shrink:0;}
+.adm-mob-nav .adm-mn-btn{display:inline-flex;align-items:center;gap:4px;padding:11px 10px;font-size:.78rem;color:#9ca3af;cursor:pointer;border-bottom:2.5px solid transparent;white-space:nowrap;}
+.adm-mob-nav .adm-mn-btn.on{color:var(--gold);border-bottom-color:var(--gold);}
+
+/* ══════════════════════════════════
+   📱 반응형 미디어쿼리
+══════════════════════════════════ */
+@media(max-width:768px){
+  /* 헤더 */
+  .hamburger{display:flex;}
+  .btn-adm{display:none;}
+  #guest-btns{display:none!important;}
+  .user-bar.show{display:none!important;}
+  nav{display:none;}
+
+  /* 히어로 */
+  .hero-content{padding:60px 16px 50px;}
+  .hero-stats{max-width:100%;}
+  .st b{font-size:1.3rem;}
+  .st{padding:14px 6px;}
+
+  /* 섹션 */
+  section{padding:52px 16px;}
+
+  /* 관리자 사이드바 → 상단 탭으로 전환 */
+  #admin-page{flex-direction:column;}
+  .adm-side{display:none;}
+  .adm-mob-nav{display:flex;}
+  .adm-body{flex-direction:column;}
+  .adm-content{padding:16px;}
+  .adm-hd{padding:0 14px;}
+  .adm-hd-title{font-size:.95rem;}
+
+  /* 게시판 테이블 모바일 */
+  table.board thead{display:none;}
+  table.board tr{display:block;border-bottom:2px solid #ddd5bc;padding:10px 0;margin-bottom:8px;background:#fff;}
+  table.board td{display:flex;padding:5px 13px;font-size:.83rem;}
+  table.board td:before{content:attr(data-label);font-weight:700;color:var(--stone);min-width:52px;margin-right:8px;}
+
+  /* 연락처 테이블 모바일 카드형 */
+  table.ct thead{display:none;}
+  table.ct tr{display:block;border:1px solid #ddd5bc;border-radius:6px;margin-bottom:10px;padding:10px 14px;background:#fff;}
+  table.ct td{display:flex;padding:4px 0;font-size:.83rem;border:none;}
+  table.ct td:before{content:attr(data-label);font-weight:700;color:var(--stone);min-width:58px;margin-right:6px;}
+
+  /* 타임라인 모바일 이미 대응됨 */
+  .off-grid{grid-template-columns:repeat(2,1fr);}
+
+  /* 모달 */
+  .modal-box{width:96%;padding:22px 16px;}
+
+  /* 관리자 테이블 모바일 스크롤 */
+  .adm-sec{overflow-x:auto;}
+}
+
+@media(max-width:420px){
+  .logo-c{font-size:1.5rem;}
+  .logo-t .m{font-size:.8rem;}
+  .logo-t .s{font-size:.6rem;}
+  .hero-h{font-size:3.2rem!important;}
+}
 </style>
 </head>
 <body>
@@ -222,6 +304,18 @@ footer{background:linear-gradient(160deg,#040c05,#0b1a0d);border-top:2px solid v
   <div class="adm-hd">
     <div class="adm-hd-title">🌿 해주오씨 시중공파 — 관리자</div>
     <button class="adm-close" id="adm-close">← 홈으로</button>
+  </div>
+  <!-- 모바일용 상단 탭 네비게이션 -->
+  <div class="adm-mob-nav" id="adm-mob-nav">
+    <div class="adm-mn-btn on" data-panel="p-site">🏠 기본정보</div>
+    <div class="adm-mn-btn" data-panel="p-officials">👥 임원</div>
+    <div class="adm-mn-btn" data-panel="p-contact">📞 연락처</div>
+    <div class="adm-mn-btn" data-panel="p-tomb">🪦 묘소</div>
+    <div class="adm-mn-btn" data-panel="p-finance">💰 재정</div>
+    <div class="adm-mn-btn" data-panel="p-gallery">📷 사진</div>
+    <div class="adm-mn-btn" data-panel="p-members">🗂️ 회원</div>
+    <div class="adm-mn-btn" data-panel="p-board">📋 게시판</div>
+    <div class="adm-mn-btn" data-panel="p-pw">🔑 비번</div>
   </div>
   <div class="adm-body">
     <div class="adm-side">
@@ -318,9 +412,38 @@ footer{background:linear-gradient(160deg,#040c05,#0b1a0d);border-top:2px solid v
         <span class="user-name" id="user-name"></span>
         <button class="btn-logout" id="btn-logout">로그아웃</button>
       </div>
+      <!-- 햄버거 메뉴 (모바일) -->
+      <button class="hamburger" id="hamburger" aria-label="메뉴">
+        <span></span><span></span><span></span>
+      </button>
     </div>
   </div>
 </header>
+
+<!-- 모바일 드롭다운 메뉴 -->
+<div class="mobile-menu" id="mobile-menu">
+  <div class="mm-auth" id="mm-auth-guest">
+    <button class="btn-login" id="mm-btn-login" style="border:1.5px solid var(--gold);background:transparent;color:var(--gold);">로그인</button>
+    <button class="btn-join" id="mm-btn-join" style="background:var(--gold);color:#1c1a14;border:none;">회원가입</button>
+    <button class="btn-adm" id="mm-btn-adm" style="padding:10px 12px;font-size:.8rem;">🔧 관리자</button>
+  </div>
+  <div class="mm-auth" id="mm-auth-user" style="display:none;align-items:center;justify-content:space-between;">
+    <span style="color:var(--gold2);font-size:.85rem;font-weight:600;" id="mm-user-name"></span>
+    <button class="btn-logout" id="mm-btn-logout" style="padding:8px 14px;">로그아웃</button>
+  </div>
+  <a href="#intro" class="mm-nav-link">가문소개</a>
+  <a href="#history" class="mm-nav-link">연혁</a>
+  <a href="#officials" class="mm-nav-link">임원</a>
+  <a href="#jetan" class="mm-nav-link">제단안내</a>
+  <a href="#ancestors" class="mm-nav-link">선조비석</a>
+  <a href="#tomb" class="mm-nav-link">묘소조성 <span class="mtag">회원</span></a>
+  <a href="#finance" class="mm-nav-link">재정현황 <span class="mtag">회원</span></a>
+  <a href="#genealogy" class="mm-nav-link">족보 <span class="mtag">회원</span></a>
+  <a href="#contact" class="mm-nav-link">연락처 <span class="mtag">회원</span></a>
+  <a href="#rules" class="mm-nav-link">회칙 <span class="mtag">회원</span></a>
+  <a href="#gallery" class="mm-nav-link">사진첩 <span class="mtag">회원</span></a>
+  <a href="#board" class="mm-nav-link">게시판</a>
+</div>
 <nav>
   <ul class="nav-ul">
     <li><a href="#intro">가문소개</a></li>
@@ -500,7 +623,7 @@ footer{background:linear-gradient(160deg,#040c05,#0b1a0d);border-top:2px solid v
 <footer>
   <div class="footer-logo">吳 · 해주오씨 시중공파</div>
   <div style="width:36px;height:1px;background:var(--gold);margin:12px auto;opacity:.4;"></div>
-  <div class="footer-info" id="footer-info">총무/간사: 혁성 · 010-9098-1481 · hsoh8797@naver.com<br>회장: 종윤 · 010-9882-8266<br>© 2026 해주오씨 시중공파 종친회</div>
+  <div class="footer-info" id="footer-info">총무/간사: 혁성 · 010-9098-1481 · <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="771f04181f4f404e403719160112055914181a">[email&#160;protected]</a><br>회장: 종윤 · 010-9882-8266<br>© 2026 해주오씨 시중공파 종친회</div>
 </footer>
 
 <!-- 로그인 -->
@@ -545,7 +668,7 @@ footer{background:linear-gradient(160deg,#040c05,#0b1a0d);border-top:2px solid v
   </div>
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 (function(){
 'use strict';
 function ld(k,d){try{var v=localStorage.getItem(k);return v?JSON.parse(v):d;}catch(e){return d;}}
@@ -765,10 +888,139 @@ function loadMbrP(){
   });
 }
 function loadBrdP(){var posts=ld('mj_posts',[]);var cnt=document.getElementById('adm-post-cnt');if(cnt)cnt.textContent=posts.length;document.getElementById('adm-board-tbody').innerHTML=posts.length?posts.slice().reverse().map(function(p,i){var ri=posts.length-1-i;return '<tr><td>'+(posts.length-i)+'</td><td>'+p.title+'</td><td>'+p.author+'</td><td>'+p.date+'</td><td><button class="btn-danger del-brd" data-i="'+ri+'">삭제</button></td></tr>';}).join(''):'<tr><td colspan="5" style="text-align:center;padding:20px;color:#666;">게시글 없음</td></tr>';document.querySelectorAll('.del-brd').forEach(function(btn){btn.addEventListener('click',function(){if(!confirm('삭제?'))return;var posts=ld('mj_posts',[]);posts.splice(parseInt(btn.dataset.i),1);sv('mj_posts',posts);renderBoard();loadBrdP();toast('삭제.');});});}
-document.getElementById('save-pw').addEventListener('click',function(){var cur=document.getElementById('pw-cur').value,nw=document.getElementById('pw-new').value,cf=document.getElementById('pw-cf').value,correct=ld('mj_admin_pw',DEF.adminPw);if(cur!==correct){showMsg('pw-err','현재 비밀번호가 틀렸습니다.');return;}if(nw.length<4){showMsg('pw-err','4자 이상 입력해주세요.');return;}if(nw!==cf){showMsg('pw-err','비밀번호가 일치하지 않습니다.');return;}sv('mj_admin_pw',nw);clearMsg('pw-err');document.getElementById('pw-cur').value='';document.getElementById('pw-new').value='';document.getElementById('pw-cf').value='';toast('비밀번호 변경 완료!');});
+document.getElementById('save-pw').addEventListener('click',function(){var cur=document.getElementById('pw-cur').value,nw=document.getElementById('pw-new').value,cf=document.getElementById('pw-cf').value,correct=ld('mj_admin_pw',DEF.adminPw);if(cur!==correct){showMsg('pw-err','현재 비밀번호가 틀렸습니다.');return;}if(nw.length<4){showMsg('pw-err','4자 이상 입력해주세요.');return;}if(nw!==cf){showMsg('pw-err','비밀번호가 일치하지 않습니다.');return;}sv('mj_admin_pw',nw);clearMsg('pw-err');document.getElementById('pw-cur').value='';document.getElementById('pw-new').value='';document.getElementById('pw-cf').value='';toast('비밀번호 변경!');});
 
-// 초기화
-renderSite();renderOfficials();renderContacts();renderTomb();renderFinance();renderPhotos();renderBoard();checkSession();
+/* ══════════════════════════════════
+   📱 모바일 햄버거 메뉴
+══════════════════════════════════ */
+var hamburger=document.getElementById('hamburger');
+var mobileMenu=document.getElementById('mobile-menu');
+hamburger.addEventListener('click',function(){
+  hamburger.classList.toggle('open');
+  mobileMenu.classList.toggle('show');
+});
+// 모바일 메뉴 링크 클릭시 닫기
+document.querySelectorAll('.mm-nav-link').forEach(function(a){
+  a.addEventListener('click',function(){
+    hamburger.classList.remove('open');
+    mobileMenu.classList.remove('show');
+  });
+});
+// 모바일 메뉴 내 로그인/가입/관리자 버튼
+document.getElementById('mm-btn-login').addEventListener('click',function(){openM('modal-login');hamburger.classList.remove('open');mobileMenu.classList.remove('show');});
+document.getElementById('mm-btn-join').addEventListener('click',function(){openM('modal-join');hamburger.classList.remove('open');mobileMenu.classList.remove('show');});
+document.getElementById('mm-btn-adm').addEventListener('click',function(){openM('modal-adm');hamburger.classList.remove('open');mobileMenu.classList.remove('show');});
+document.getElementById('mm-btn-logout').addEventListener('click',function(){doLogout();hamburger.classList.remove('open');mobileMenu.classList.remove('show');});
+
+// 로그인 상태에 따라 모바일 메뉴 인증 바 업데이트
+function updateMobileMenu(){
+  var u=getCurrentUser();
+  var guestBar=document.getElementById('mm-auth-guest');
+  var userBar2=document.getElementById('mm-auth-user');
+  var mmName=document.getElementById('mm-user-name');
+  if(u&&u.status==='approved'){
+    guestBar.style.display='none';
+    userBar2.style.display='flex';
+    if(mmName)mmName.textContent=u.name+' 님';
+  } else {
+    guestBar.style.display='flex';
+    userBar2.style.display='none';
+  }
+}
+
+/* ══════════════════════════════════
+   📱 관리자 모바일 탭 네비게이션
+══════════════════════════════════ */
+document.querySelectorAll('.adm-mn-btn').forEach(function(btn){
+  btn.addEventListener('click',function(){
+    var target=btn.dataset.panel;
+    document.querySelectorAll('.adm-panel').forEach(function(p){p.classList.remove('show');});
+    document.querySelectorAll('.adm-menu-item').forEach(function(m){m.classList.remove('on');});
+    document.querySelectorAll('.adm-mn-btn').forEach(function(b){b.classList.remove('on');});
+    var panel=document.getElementById(target);
+    if(panel){panel.classList.add('show');}
+    btn.classList.add('on');
+    // 사이드바도 동기화
+    var sideItem=document.querySelector('.adm-menu-item[data-panel="'+target+'"]');
+    if(sideItem)sideItem.classList.add('on');
+    // 해당 패널 내용 로드
+    if(target==='p-site')loadSiteP();
+    else if(target==='p-officials')loadOffP();
+    else if(target==='p-contact')loadCtP();
+    else if(target==='p-tomb')loadTombP();
+    else if(target==='p-finance')loadFinP();
+    else if(target==='p-gallery')loadGalP();
+    else if(target==='p-members')loadMbrP();
+    else if(target==='p-board')loadBrdP();
+  });
+});
+
+/* ══════════════════════════════════
+   📱 연락처 테이블 모바일 data-label 동적 추가
+══════════════════════════════════ */
+var _origRenderContacts=renderContacts;
+renderContacts=function(){
+  _origRenderContacts();
+  var tbody=document.getElementById('contact-display');
+  if(!tbody)return;
+  var labels=['성명','전화(집)','휴대폰','이메일','비고'];
+  tbody.querySelectorAll('tr').forEach(function(tr){
+    tr.querySelectorAll('td').forEach(function(td,i){
+      td.setAttribute('data-label',labels[i]||'');
+    });
+  });
+};
+
+/* 게시판 data-label 동적 추가 */
+var _origRenderBoard=renderBoard;
+renderBoard=function(){
+  _origRenderBoard();
+  var tbody=document.getElementById('board-body');
+  if(!tbody)return;
+  var labels=['번호','제목','작성자','날짜','삭제'];
+  tbody.querySelectorAll('tr:not(.board-empty)').forEach(function(tr){
+    tr.querySelectorAll('td').forEach(function(td,i){
+      td.setAttribute('data-label',labels[i]||'');
+    });
+  });
+};
+
+/* ══════════════════════════════════
+   초기화 시 모바일 메뉴 상태 업데이트
+══════════════════════════════════ */
+updateMobileMenu();
+
+// 기존 doLogin/doLogout 이후 모바일 메뉴도 갱신
+var _origRenderAuth=function(){};
+// 로그인/로그아웃 후 updateMobileMenu 호출 패치
+var origDoLogin=window.doLogin;
+(function(){
+  var origLoginBtn=document.getElementById('btn-do-login');
+  if(origLoginBtn){
+    var cloned=origLoginBtn.cloneNode(true);
+    origLoginBtn.parentNode.replaceChild(cloned,origLoginBtn);
+    cloned.addEventListener('click',function(){
+      var ph=document.getElementById('login-phone').value.trim();
+      var pw=document.getElementById('login-pw').value;
+      var users=getUsers();
+      var u=users.find(function(x){return x.phone===ph&&x.pw===pw;});
+      clearMsg('login-err');
+      if(!u){showMsg('login-err','아이디 또는 비밀번호가 맞지 않습니다.');return;}
+      if(u.status==='pending'){showMsg('login-err','관리자 승인 대기 중입니다.');return;}
+      if(u.status==='rejected'){showMsg('login-err','가입이 반려되었습니다. 총무에게 문의하세요.');return;}
+      sv('mj_cur_user',{name:u.name,phone:u.phone,status:u.status});
+      closeM('modal-login');
+      renderAuth();
+      renderAll();
+      updateMobileMenu();
+    });
+  }
+})();
+
+document.getElementById('btn-logout').addEventListener('click',function(){
+  setTimeout(updateMobileMenu,50);
+});
+
 })();
 </script>
 </body>
